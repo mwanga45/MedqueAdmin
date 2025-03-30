@@ -40,9 +40,7 @@ export default function Register() {
         </div>
         <div className="cross-line">
         </div>
-        {/* <Link href="./">Login here</Link> */}
         <button className=" jump-to" name="jump">Already register <IoLogInSharp/></button>
-        <IoLogInSharp/>
     </form>
 </div>
 );

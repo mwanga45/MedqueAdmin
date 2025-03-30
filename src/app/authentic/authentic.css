@@ -104,7 +104,25 @@
     background-color: rgb(3, 3, 72);
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
  }
+ /* shared  style */
  .cross-line{
     width: 100%;
     border-bottom: 2px solid rgb(173, 173, 173);
  }
+ .jump-to{
+    display: flex;
+    flex-direction: row;
+    color: black;
+    cursor: pointer;
+    justify-content: center;
+    align-items: center;
+    column-gap: 12px;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+ }
+ .jump-to :hover{
+    color: rgb(83, 210, 44);
+ }
+ .jump-to svg{
+    font-size: 40px;
+ }
+/* end of share style */
