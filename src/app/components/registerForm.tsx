@@ -1,5 +1,6 @@
 "use client"
 import React from "react";
+import Link from "next/link";
 export default interface Staff {
   name: string;
   registration: number;
@@ -10,7 +11,7 @@ export default interface Staff {
 export default function Register() {
   return (
     <div className="reg-container">
-        <div>
+        <div className="regTitle">
             <p>Register An Account Here! </p>
         </div>
     <form>
@@ -37,6 +38,9 @@ export default function Register() {
         <div className="regbtn-container">
             <button type="submit" name="Submit" className="reg-btn">Register</button>
         </div>
+        <div className="cross-line">
+        </div>
+        <Link href="./">Login here</Link>
     </form>
 </div>
 );
