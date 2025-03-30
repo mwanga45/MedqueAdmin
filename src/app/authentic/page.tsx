@@ -21,7 +21,7 @@ export default function Authentic() {
         <div className="right-content">
           <BiHealth />
           <p className="right-title">Welcome To Medqueue</p>
-          <p>let change our life with it </p>
+          <p style={{color:"silver"}}>let change our life with it </p>
         </div>
       </div>
     </div>
