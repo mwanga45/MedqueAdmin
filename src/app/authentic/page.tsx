@@ -21,7 +21,19 @@ export default function Authentic() {
         <div className="right-content">
           <BiHealth />
           <p className="right-title">Welcome To Medqueue</p>
-          <p style={{color:"silver"}}>let change our life with it </p>
+          <div
+            style={{
+              color: "silver",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <p>
+              Let us make our country health service better and make our time
+              more worth with Mequeue
+            </p>
+          </div>
         </div>
       </div>
     </div>
