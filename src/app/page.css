@@ -7,15 +7,27 @@
     width: "100%";
 }
 .go-to{
-    display: flex;
+   display: flex;
    background-color: whitesmoke;
    height: 6svh;
    width: 210px;
    justify-content: center;
    align-items: center;
-   flex-direction: column;
+   flex-direction: row;
+   column-gap: 12px;
+   border-radius: 5px;
+   box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
 }
 .go-to button{
     color: rgb(30, 30, 30);
-
+    font-weight: 600;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    cursor: pointer;
 }
+.go-to svg{
+    color: rgb(30, 30, 30);
+    font-size: small;
+}
+ .go-to button:hover{
+    color: brown;
+ }
