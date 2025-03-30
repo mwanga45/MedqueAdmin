@@ -1,6 +1,6 @@
 "use client"
 import React from "react";
-import Link from "next/link";
+import { IoLogInSharp } from "react-icons/io5";
 export default interface Staff {
   name: string;
   registration: number;
@@ -40,7 +40,9 @@ export default function Register() {
         </div>
         <div className="cross-line">
         </div>
-        <Link href="./">Login here</Link>
+        {/* <Link href="./">Login here</Link> */}
+        <button className=" jump-to" name="jump">Already register <IoLogInSharp/></button>
+        <IoLogInSharp/>
     </form>
 </div>
 );

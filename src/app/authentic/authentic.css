@@ -104,3 +104,7 @@
     background-color: rgb(3, 3, 72);
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
  }
+ .cross-line{
+    width: 100%;
+    border-bottom: 2px solid rgb(173, 173, 173);
+ }
