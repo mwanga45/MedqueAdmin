@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import Register from "../components/login";
+import Register from "../components/registerForm";
 import { BiHealth } from "react-icons/bi";
 import { FaHospitalSymbol } from "react-icons/fa";
 import { GiBigWave } from "react-icons/gi";
