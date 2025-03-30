@@ -41,7 +41,9 @@
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 .left-svg{
-    padding-left: 12px;
+    width: 10%;
+    margin-left: 12px;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
 }
 .left-svg svg{
    font-size: 40px;
@@ -63,6 +65,7 @@
     color: rgb(47, 47, 47);
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     margin-bottom: 12px;
+    box-shadow: rgba(27, 31, 35, 0.04) 0px 1px 0px, rgba(255, 255, 255, 0.25) 0px 1px 0px inset;
 }
 
  .reg-container form{
@@ -93,6 +96,7 @@
     border-radius: 5px;
     height: 5svh;
     width: 35svh;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
  }
  .regbtn-container{
     width: 100%;
@@ -102,6 +106,7 @@
     height: 5svh;
     border-radius: 5px;
     background-color: rgb(3, 3, 72);
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
  }
  /* shared  style */
@@ -119,10 +124,11 @@
     column-gap: 12px;
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
  }
- .jump-to :hover{
+ .jump-to:hover{
     color: rgb(83, 210, 44);
  }
  .jump-to svg{
     font-size: 40px;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
  }
 /* end of share style */
