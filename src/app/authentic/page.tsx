@@ -29,7 +29,7 @@ export default function Authentic() {
               alignItems: "center",
             }}
           >
-            <p>
+            <p style={{width:"60%"}}>
               Let us make our country health service better and make our time
               more worth with Mequeue
             </p>
