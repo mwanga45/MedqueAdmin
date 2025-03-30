@@ -1,0 +1,42 @@
+/* css for the Authentic page */
+.authentic-container{
+    width: 100%;
+    height: 100svh;
+    background-color: aliceblue;;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+.left-Acontainer{
+    width: 35%;
+    height:90% ;
+    border-radius: 2px;
+    background-color: rgb(  44, 142, 44);
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+}
+.right-Acontainer{
+    display: flex;
+    width: 35%;
+    height:90% ;
+    background-color: rgb(18, 6, 72);
+    border-radius: 2px;
+    justify-content: center;
+    align-items: center;
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+}
+.right-content{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.right-content svg{
+    font-size: 12svh;
+    transform: translateZ(40deg);
+    transition: all ease-in 500ms;
+}
+.right-title{
+    font-size: 25px;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
