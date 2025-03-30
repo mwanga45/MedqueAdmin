@@ -11,7 +11,7 @@ export default function Register() {
   return (
     <div className="reg-container">
         <div>
-            <p>Register Here! </p>
+            <p>Register An Account Here! </p>
         </div>
     <form>
         <div className="reg-inputConatiner">
@@ -34,8 +34,8 @@ export default function Register() {
             <label htmlFor="RegNumber-input">Confirm Password</label>
             <input type="password" name="password-confirm" id="RegNumber" placeholder="Re type your password to confirm"/>
         </div>
-        <div>
-            <input type="submit" name="Submit">Register</input>
+        <div className="regbtn-container">
+            <button type="submit" name="Submit" className="reg-btn">Register</button>
         </div>
     </form>
 </div>
