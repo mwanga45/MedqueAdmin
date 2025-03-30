@@ -1,0 +1,21 @@
+.container{
+    display: flex;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+    height: 91svh;
+    width: "100%";
+}
+.go-to{
+    display: flex;
+   background-color: whitesmoke;
+   height: 6svh;
+   width: 210px;
+   justify-content: center;
+   align-items: center;
+   flex-direction: column;
+}
+.go-to button{
+    color: rgb(30, 30, 30);
+
+}
