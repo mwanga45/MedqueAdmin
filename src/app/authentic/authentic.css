@@ -48,6 +48,7 @@
 .reg-container{
     background-color: black;
     display: flex;
+    flex: 1;
     justify-content: center;
     align-items: center;
 }
