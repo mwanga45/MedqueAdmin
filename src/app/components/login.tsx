@@ -8,19 +8,15 @@ export default function Login (){
                 <p>Sign Here!</p>
             </div>
             <form>
-                <div>
+                <div className="log-inputConatiner">
                     <label htmlFor="name-input">Username</label>
                     <input type="text" name="name" id="name-input" placeholder="Enter your name please"/>
                 </div>
-                <div>
-                    <label htmlFor="Email-input">Email</label>
-                    <input type="email" id="Email-input" placeholder="Enter your name please"/>
-                </div>
-                <div>
+                <div className="log-inputConatiner">
                     <label htmlFor="RegNumber-input">Registration Number</label>
                     <input type="text" name="RegNumber" id="RegNumber" placeholder="Enter your name please"/>
                 </div>
-                <div>
+                <div className="log-inputConatiner">
                     <label htmlFor="RegNumber-input">Password</label>
                     <input type="password" name="user-password" id="RegNumber" placeholder="Enter your name please"/>
                 </div>
