@@ -132,3 +132,22 @@
     box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
  }
 /* end of share style */
+
+/* login form style */
+.log-container{
+   /* background-color: rgb(143, 142, 142); */
+   display: flex;
+   flex-direction: column;
+   flex: 1;
+   justify-content: center;
+   align-items: center;
+}
+.logTitle{
+   font-size: 30px;
+   font-weight: 800;
+   color: rgb(47, 47, 47);
+   font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+   margin-bottom: 12px;
+   margin-top: 12px;
+   box-shadow: rgba(27, 31, 35, 0.04) 0px 1px 0px, rgba(255, 255, 255, 0.25) 0px 1px 0px inset;
+}

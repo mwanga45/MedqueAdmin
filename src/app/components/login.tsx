@@ -3,7 +3,10 @@ import React from "react";
 
 export default function Login (){
     return(
-        <div className="reg-container">
+        <div className="log-container">
+            <div className="logTitle">
+                <p>Sign Here!</p>
+            </div>
             <form>
                 <div>
                     <label htmlFor="name-input">Username</label>
@@ -20,10 +23,6 @@ export default function Login (){
                 <div>
                     <label htmlFor="RegNumber-input">Password</label>
                     <input type="password" name="user-password" id="RegNumber" placeholder="Enter your name please"/>
-                </div>
-                <div>
-                    <label htmlFor="RegNumber-input">Confirm Password</label>
-                    <input type="password" name="password-confirm" id="RegNumber" placeholder="Enter your name please"/>
                 </div>
             </form>
         </div>

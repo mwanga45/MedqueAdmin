@@ -4,6 +4,7 @@ import Register from "../components/registerForm";
 import { BiHealth } from "react-icons/bi";
 import { FaHospitalSymbol } from "react-icons/fa";
 import { GiBigWave } from "react-icons/gi";
+import Login from "../components/login";
 import "./authentic.css";
 export default function Authentic() {
   return (
@@ -14,7 +15,8 @@ export default function Authentic() {
           <GiBigWave />
         </div>
         <div className="form-register">
-          <Register />
+          {/* <Register /> */}
+          <Login/>
         </div>
       </div>
       <div className="right-Acontainer">

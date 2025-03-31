@@ -8,7 +8,7 @@ export default function Home() {
   return (
     <div className="container">
       <div className="go-to">
-        <Link href="/">
+        <Link href="/authentic">
         <button name="go-to">Get started </button >
         </Link>
         <FaArrowRight/>
