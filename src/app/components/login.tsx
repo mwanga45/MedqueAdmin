@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-
+import { IoLogOutSharp } from "react-icons/io5";
 export default function Login() {
   return (
     <div className="log-container">
@@ -40,6 +40,10 @@ export default function Login() {
             Login
           </button>
         </div>
+        <div className="cross-line"></div>
+        <button className="jump-to">
+            Register here <IoLogOutSharp/>
+        </button>
       </form>
     </div>
   );
