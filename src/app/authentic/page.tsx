@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import Register from "../components/registerForm";
 import { BiHealth } from "react-icons/bi";
 import { FaHospitalSymbol } from "react-icons/fa";
@@ -7,6 +7,10 @@ import { GiBigWave } from "react-icons/gi";
 import Login from "../components/login";
 import "./authentic.css";
 export default function Authentic() {
+  const [isOpenForm, setisOpenForm]= useState<boolean>(true)
+  const handleChangeForm = ()=>{
+    setisOpenForm(!isOpenForm)
+  }
   return (
     <div className="authentic-container">
       <div className="left-Acontainer">
@@ -15,8 +19,11 @@ export default function Authentic() {
           <GiBigWave />
         </div>
         <div className="form-register">
-          {/* <Register /> */}
-          <Login/>
+        {isOpenForm ? (
+            <Login changeToRegister={handleChangeForm} />
+          ) : (
+            <Register />
+          )}
         </div>
       </div>
       <div className="right-Acontainer">

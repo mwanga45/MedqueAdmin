@@ -1,7 +1,16 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { IoLogOutSharp } from "react-icons/io5";
-export default function Login() {
+interface LoginProps{
+    changeToRegister: ()=> void
+}
+export default function Login({changeToRegister}:LoginProps) {
+    const [ischanged, setischanged] = useState<boolean>(false)
+    const handleToRegister = (event:React.MouseEvent<HTMLButtonElement>)=>{
+        event.preventDefault()
+        setischanged(!ischanged)
+        changeToRegister()
+    }
   return (
     <div className="log-container">
       <div className="logTitle">
@@ -41,7 +50,7 @@ export default function Login() {
           </button>
         </div>
         <div className="cross-line"></div>
-        <button className="jump-to">
+        <button className="jump-to" onClick={handleToRegister}>
             Register here <IoLogOutSharp/>
         </button>
       </form>
