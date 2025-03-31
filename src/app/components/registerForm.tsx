@@ -1,5 +1,5 @@
 "use client"
-import React from "react";
+import React, { useState } from "react";
 import { IoLogInSharp } from "react-icons/io5";
 export default interface Staff {
   name: string;
@@ -8,7 +8,16 @@ export default interface Staff {
   phone: number;
   home_address: string;
 }
-export default function Register() {
+interface changeToLogin {
+    changeToLogin: ()=> void
+}
+export default function Register({changeToLogin}:changeToLogin) {
+    const [CloseForm, setCloseForm] = useState<boolean>(false)
+    const handleToLogin = (event:React.MouseEvent<HTMLButtonElement>)=>{
+        event.preventDefault()
+        setCloseForm(!CloseForm)
+        changeToLogin()
+    }
   return (
     <div className="reg-container">
         <div className="regTitle">
@@ -40,7 +49,7 @@ export default function Register() {
         </div>
         <div className="cross-line">
         </div>
-        <button className=" jump-to" name="jump">Already register <IoLogInSharp/></button>
+        <button className=" jump-to" name="jump"onClick={handleToLogin} >Already register <IoLogInSharp/></button>
     </form>
 </div>
 );

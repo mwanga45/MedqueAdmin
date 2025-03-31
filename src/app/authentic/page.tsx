@@ -22,7 +22,7 @@ export default function Authentic() {
         {isOpenForm ? (
             <Login changeToRegister={handleChangeForm} />
           ) : (
-            <Register />
+            <Register changeToLogin={handleChangeForm} />
           )}
         </div>
       </div>
