@@ -1,5 +1,6 @@
 "use client";
 import React from "react";
+import MainTb from "../components/animate-table";
 import "./dashboard.css";
 import { FaSearch } from "react-icons/fa";
 import Sidebar from "../components/sidebar";
@@ -38,7 +39,9 @@ export default function Dashboard() {
                   <FaSearch size={20} color="black"/>
                 </div>
       </div>
-      <div className="dash-maincontainer"></div>
+      <div className="dash-maincontainer">
+          <MainTb/>
+      </div>
     </div>
   );
 }
