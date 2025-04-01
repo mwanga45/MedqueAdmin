@@ -1,6 +1,6 @@
 .dash-container{
     display: grid;
-    grid-template-columns: 1fr 3fr;
+    grid-template-columns: 1fr 6fr;
     grid-template-rows: auto auto;
     padding-top:3px;
     
@@ -32,4 +32,33 @@
     border-radius: 5px;
     overflow-y: hidden;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+}
+
+/* Navigation bar  style */
+.nav-upper{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+}
+.nav-searchbar{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid whitesmoke;
+    border-radius: 5px;
+    height: 4svh;
+    padding: 2px;
+    margin-top: 10px;
+}
+.nav-searchbar input{
+    outline: none;
+    /* background-color: black; */
+}
+.nav-searchbar svg{
+    height: auto;
+    width: auto;
+    cursor: pointer;
+    box-shadow: rgba(0, 0, 0, 0.15) 2.4px 2.4px 3.2px;
 }
