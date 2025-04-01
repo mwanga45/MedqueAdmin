@@ -25,6 +25,7 @@ export default function Register({changeToLogin,}:changeToLogin) {
       event.preventDefault()
     }
     const handleLoginBtn = (event:React.MouseEvent<HTMLButtonElement>)=>{
+        event.preventDefault()
         router.push("./dashboard")
       }
   return (
