@@ -8,7 +8,6 @@ export default function Login({changeToRegister}:LoginProps) {
     const [ischanged, setischanged] = useState<boolean>(false)
     const handleToRegister = (event:React.MouseEvent<HTMLButtonElement>)=>{
         event.preventDefault()
-        setischanged(!ischanged)
         changeToRegister()
     }
   return (

@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from "react";
+import { useRouter } from "next/router";
 import Register from "../components/registerForm";
 import { BiHealth } from "react-icons/bi";
 import { FaHospitalSymbol } from "react-icons/fa";
@@ -8,6 +9,11 @@ import Login from "../components/login";
 import "./authentic.css";
 export default function Authentic() {
   const [isOpenForm, setisOpenForm]= useState<boolean>(true)
+  const router = useRouter()
+  const handleLoginBtn = (event:React.MouseEvent<HTMLButtonElement>)=>{
+    event.preventDefault()
+    router.push("./dashboard")
+  }
   const handleChangeForm = ()=>{
     setisOpenForm(!isOpenForm)
   }

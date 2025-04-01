@@ -11,12 +11,18 @@ export default interface Staff {
 interface changeToLogin {
     changeToLogin: ()=> void
 }
-export default function Register({changeToLogin}:changeToLogin) {
+interface Todashboard{
+    todashboard:()=> void
+}
+export default function Register({changeToLogin}:changeToLogin,{todashboard}:Todashboard) {
     const [CloseForm, setCloseForm] = useState<boolean>(false)
     const handleToLogin = (event:React.MouseEvent<HTMLButtonElement>)=>{
         event.preventDefault()
         setCloseForm(!CloseForm)
         changeToLogin()
+    }
+    const handleRegister = (event:React.MouseEvent<HTMLButtonElement>){
+        
     }
   return (
     <div className="reg-container">
