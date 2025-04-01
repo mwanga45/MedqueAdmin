@@ -1,11 +1,14 @@
 "use client";
 import React from "react";
 import "./dashboard.css";
+import Sidebar from "../components/sidebar";
 export default function Dashboard() {
+    const handlesidebar = ()=>{
+    }
   return (
     <div className="dash-container">
       <div className="dash-sidebar">
-        HI
+        <Sidebar/>
       </div>
       <div className="dash-upperboard">
         hELLO
