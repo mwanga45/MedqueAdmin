@@ -1,5 +1,4 @@
 "use client"
-
 import { useState } from "react"
 import AnimatedTable from "./table"
 import { motion } from "framer-motion"

@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import MainTb from "../components/animate-table";
+import AnimatedTable from "../components/table";
 import "./dashboard.css";
 import { FaSearch } from "react-icons/fa";
 import Sidebar from "../components/sidebar";
@@ -30,9 +31,9 @@ export default function Dashboard() {
             <div className="optional-dash">
                 <p>Doctor</p>
             </div>
-            <div className="optional-dash">
+            {/* <div className="optional-dash">
                 <p>Booking</p>
-            </div>
+            </div> */}
         </div>
          <div className="Upper-searchbar">
                   <input type='text' name='search' placeholder='search'/>
@@ -40,7 +41,8 @@ export default function Dashboard() {
                 </div>
       </div>
       <div className="dash-maincontainer">
-          <MainTb/>
+          <AnimatedTable/>
+
       </div>
     </div>
   );
