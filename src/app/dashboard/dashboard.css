@@ -19,7 +19,7 @@
     grid-column: 2/3;
     grid-row: 1/2;
     background-color: whitesmoke;
-    height: 30svh;
+    height: 25svh;
     border-radius: 5px;
     overflow-y:hidden ;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
@@ -28,7 +28,7 @@
     grid-column: 2/3;
     grid-row: 2/3;
     background-color: white;
-    height: 70svh;
+    height: 75svh;
     border-radius: 5px;
     overflow-y: hidden;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
@@ -49,15 +49,15 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border: 1px solid whitesmoke;
+    border: 1px solid rgb(175, 175, 175);
     border-radius: 5px;
     height: 4svh;
     padding: 2px;
     margin-top: 10px;
+    margin-bottom: 20px;
 }
 .nav-searchbar input{
     outline: none;
-    /* background-color: black; */
 }
 .nav-searchbar svg{
     height: auto;
@@ -80,6 +80,9 @@
     align-items: center;
     column-gap: 5px;
 }
+.nav-container ul li{
+    color:silver
+}
 .nav-crossline{
     border-bottom: 2px solid grey;
     margin-top: 12px;
@@ -89,6 +92,7 @@
 .nav-account{
     position: absolute;
     bottom: 5%;
+    left: 20px;
 }
 .nav-imagecontainer{
     background-color: rgb(255, 255, 255);

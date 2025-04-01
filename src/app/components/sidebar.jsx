@@ -63,8 +63,7 @@ export default function Sidebar() {
            <img src="/next.svg" alt="Next.js Logo" />
            </div>
            <div className="nav-AccountName">
-            <p>Lynx Prazoo</p>
-
+            <p>@lynx Prazoo</p>
            </div>
         </div>
     </div>
