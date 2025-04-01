@@ -10,10 +10,6 @@ import "./authentic.css";
 export default function Authentic() {
   const router = useRouter()
   const [isOpenForm, setisOpenForm]= useState<boolean>(true)
-  const handleLoginBtn = ()=>{
-    // event.preventDefault()
-    router.push("./dashboard")
-  }
   const handleChangeForm = ()=>{
     setisOpenForm(!isOpenForm)
   }
@@ -26,9 +22,9 @@ export default function Authentic() {
         </div>
         <div className="form-register">
         {isOpenForm ? (
-            <Login changeToRegister={handleChangeForm} />
+            <Login changeToRegister={handleChangeForm}/>
           ) : (
-            <Register changeToLogin={handleChangeForm} todashboard={handleLoginBtn} />
+            <Register changeToLogin={handleChangeForm}/>
           )}
         </div>
       </div>

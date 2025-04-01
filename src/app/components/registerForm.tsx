@@ -1,5 +1,6 @@
 "use client"
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 import { IoLogInSharp } from "react-icons/io5";
 export default interface Staff {
   name: string;
@@ -10,21 +11,22 @@ export default interface Staff {
 }
 interface changeToLogin {
     changeToLogin: ()=> void
-    todashboard:()=> void
+    // todashboard:()=> void
 }
-// interface Todashboard{
-// }
-export default function Register({changeToLogin,todashboard}:changeToLogin) {
+
+export default function Register({changeToLogin,}:changeToLogin) {
+    const router = useRouter()
     const [CloseForm, setCloseForm] = useState<boolean>(false)
     const handleToLogin = (event:React.MouseEvent<HTMLButtonElement>)=>{
-        event.preventDefault()
-        // setCloseForm(!CloseForm)
+        event.preventDefault()  
         changeToLogin()
     }
     const handleRegister = (event:React.MouseEvent<HTMLButtonElement>)=>{
       event.preventDefault()
-      todashboard()
     }
+    const handleLoginBtn = (event:React.MouseEvent<HTMLButtonElement>)=>{
+        router.push("./dashboard")
+      }
   return (
     <div className="reg-container">
         <div className="regTitle">
@@ -52,7 +54,7 @@ export default function Register({changeToLogin,todashboard}:changeToLogin) {
             <input type="password" name="password-confirm" id="RegNumber" placeholder="Re type your password to confirm"/>
         </div>
         <div className="regbtn-container">
-            <button type="submit" name="Submit" className="reg-btn" onClick={handleRegister}>Register</button>
+            <button type="submit" name="Submit" className="reg-btn" onClick={handleLoginBtn}>Register</button>
         </div>
         <div className="cross-line">
         </div>
