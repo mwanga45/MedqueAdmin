@@ -3,6 +3,12 @@ import React from 'react'
 import { FaSearch } from "react-icons/fa";
 import { MdCloseFullscreen } from "react-icons/md";
 import { MdDashboard } from "react-icons/md";
+import { IoSettingsOutline } from "react-icons/io5";
+import { SiMinutemailer } from "react-icons/si";
+import { IoNotifications } from "react-icons/io5";
+import { FaCodeMerge } from "react-icons/fa6";
+import { GrSchedules } from "react-icons/gr";
+import { FaUserEdit } from "react-icons/fa";
 
 export default function Sidebar() {
   return (
@@ -23,39 +29,39 @@ export default function Sidebar() {
         </div>
         <div className="navlink-container">
           <ul>
-            <li>Dashboard</li>
-            <li><MdDashboard/></li>
+            <li>Staff Registration</li>
+            <li><FaUserEdit /></li>
           </ul>
         </div>
         <div className="navlink-container">
           <ul>
-            <li>Dashboard</li>
-            <li><MdDashboard/></li>
+            <li>Emergence</li>
+            <li>< FaCodeMerge/></li>
           </ul>
         </div>
         <div className="navlink-container">
           <ul>
-            <li>Dashboard</li>
-            <li><MdDashboard/></li>
+            <li>Sheduling</li>
+            <li><GrSchedules/></li>
           </ul>
         </div>
         <div className="nav-crossline"></div>
         <div className="navlink-container">
           <ul>
-            <li>Dashboard</li>
-            <li><MdDashboard/></li>
+            <li>Notification</li>
+            <li><IoNotifications/></li>
           </ul>
         </div>
         <div className="navlink-container">
           <ul>
-            <li>Dashboard</li>
-            <li><MdDashboard/></li>
+            <li>User-Recommendation</li>
+            <li><SiMinutemailer/></li>
           </ul>
         </div>
         <div className="navlink-container">
           <ul>
-            <li>Dashboard</li>
-            <li><MdDashboard/></li>
+            <li>Setting</li>
+            <li><IoSettingsOutline /></li>
           </ul>
         </div>
         <div className="nav-account">
