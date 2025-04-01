@@ -104,3 +104,42 @@
     border-radius: 50%;
     box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
 }
+/* style for the apper board */
+
+.page-title{
+    font-size: 30px;
+    font-weight: 900;
+    color: #101011;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+.upper-innercontainer{
+    padding: 10px;
+    display: flex;
+    /* justify-content: center; */
+    align-items: center;
+}
+.unv-title{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    column-gap: 5px;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
+    
+}
+.optional-dashcontainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    column-gap: 5px;
+    
+}
+.optional-dash{
+  background-color: #101011;
+  width: 8%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.45) 0px 25px 20px -20px;
+}
