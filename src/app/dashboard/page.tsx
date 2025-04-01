@@ -35,10 +35,10 @@ export default function Dashboard() {
         </div>
          <div className="Upper-searchbar">
                   <input type='text' name='search' placeholder='search'/>
-                  <FaSearch/>
+                  <FaSearch size={20} color="black"/>
                 </div>
       </div>
-      <div className="dash-maincontainer">NOPE</div>
+      <div className="dash-maincontainer"></div>
     </div>
   );
 }
