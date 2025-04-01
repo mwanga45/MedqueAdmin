@@ -35,6 +35,9 @@
 }
 
 /* Navigation bar  style */
+.nav-container{
+    padding: 12px;
+}
 .nav-upper{
     display: flex;
     flex-direction: row;
@@ -61,4 +64,25 @@
     width: auto;
     cursor: pointer;
     box-shadow: rgba(0, 0, 0, 0.15) 2.4px 2.4px 3.2px;
+}
+.navlink-container{
+    margin-top: 22px;
+    display: flex;
+    padding-right: 5%;
+    padding-left: 5%;
+    margin-top: 12px;
+    margin-bottom: 22px;
+}
+.navlink-container ul{
+    display: flex;
+    justify-content: center;
+    flex-direction: row-reverse;
+    align-items: center;
+    column-gap: 5px;
+}
+.nav-crossline{
+    border-bottom: 2px solid grey;
+    margin-top: 12px;
+    margin-bottom: 12px;
+    padding: 0%;
 }
