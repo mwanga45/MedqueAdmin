@@ -11,7 +11,6 @@ export default interface Staff {
 }
 interface changeToLogin {
     changeToLogin: ()=> void
-    // todashboard:()=> void
 }
 
 export default function Register({changeToLogin,}:changeToLogin) {
@@ -23,11 +22,8 @@ export default function Register({changeToLogin,}:changeToLogin) {
     }
     const handleRegister = (event:React.MouseEvent<HTMLButtonElement>)=>{
       event.preventDefault()
+      router.push("./dashboard")
     }
-    const handleLoginBtn = (event:React.MouseEvent<HTMLButtonElement>)=>{
-        event.preventDefault()
-        router.push("./dashboard")
-      }
   return (
     <div className="reg-container">
         <div className="regTitle">
@@ -55,7 +51,7 @@ export default function Register({changeToLogin,}:changeToLogin) {
             <input type="password" name="password-confirm" id="RegNumber" placeholder="Re type your password to confirm"/>
         </div>
         <div className="regbtn-container">
-            <button type="submit" name="Submit" className="reg-btn" onClick={handleLoginBtn}>Register</button>
+            <button type="submit" name="Submit" className="reg-btn" onClick={handleRegister}>Register</button>
         </div>
         <div className="cross-line">
         </div>
