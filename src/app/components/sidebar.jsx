@@ -9,7 +9,7 @@ export default function Sidebar() {
     <div  className='nav-container'>
         <div className="nav-upper">
           <p>Hello world</p>
-          <MdCloseFullscreen/>
+          <MdCloseFullscreen size={30}/>
         </div>
         <div className="nav-searchbar">
           <input type='text' name='search' placeholder='search'/>
@@ -59,7 +59,13 @@ export default function Sidebar() {
           </ul>
         </div>
         <div className="nav-account">
-          
+           <div className="nav-imagecontainer">
+           <img src="/next.svg" alt="Next.js Logo" />
+           </div>
+           <div className="nav-AccountName">
+            <p>Lynx Prazoo</p>
+
+           </div>
         </div>
     </div>
   )

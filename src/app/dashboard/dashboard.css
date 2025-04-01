@@ -86,3 +86,17 @@
     margin-bottom: 12px;
     padding: 0%;
 }
+.nav-account{
+    position: absolute;
+    bottom: 5%;
+}
+.nav-imagecontainer{
+    background-color: rgb(255, 255, 255);
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+}
