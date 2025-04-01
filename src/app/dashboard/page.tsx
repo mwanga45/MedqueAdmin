@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import "./dashboard.css";
+import { FaSearch } from "react-icons/fa";
 import Sidebar from "../components/sidebar";
 import { BiHealth } from "react-icons/bi";
 export default function Dashboard() {
@@ -32,6 +33,10 @@ export default function Dashboard() {
                 <p>Booking</p>
             </div>
         </div>
+         <div className="Upper-searchbar">
+                  <input type='text' name='search' placeholder='search'/>
+                  <FaSearch/>
+                </div>
       </div>
       <div className="dash-maincontainer">NOPE</div>
     </div>
