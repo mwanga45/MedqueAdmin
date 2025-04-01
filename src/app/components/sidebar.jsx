@@ -8,7 +8,7 @@ export default function Sidebar() {
   return (
     <div  className='nav-container'>
         <div className="nav-upper">
-          <p>Hello world</p>
+          <p style={{color:"whitesmoke", fontSize:"20px", fontWeight:"800", fontFamily:"revert-layer"}}>Main Menu</p>
           <MdCloseFullscreen size={30}/>
         </div>
         <div className="nav-searchbar">
