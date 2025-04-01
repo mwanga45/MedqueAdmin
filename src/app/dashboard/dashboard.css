@@ -2,7 +2,9 @@
     display: grid;
     grid-template-columns: 1fr 3fr;
     grid-template-rows: auto auto;
-    padding: .5svh;
+    padding-top:3px;
+    
+    
     
 }
 .dash-sidebar{
@@ -10,21 +12,24 @@
     grid-row: 1/3;
     height: 99.5svh;
     border-radius: 5px;
+    background-color: #4d5355;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
 }
 .dash-upperboard{
     grid-column: 2/3;
     grid-row: 1/2;
     background-color: whitesmoke;
-    height: 29.5svh;
+    height: 30svh;
     border-radius: 5px;
+    overflow-y:hidden ;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
 }
 .dash-maincontainer{
     grid-column: 2/3;
     grid-row: 2/3;
     background-color: white;
-    height: 69.5svh;
+    height: 70svh;
     border-radius: 5px;
+    overflow-y: hidden;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
 }
