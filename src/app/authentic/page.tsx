@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import Register from "../components/registerForm";
 import { BiHealth } from "react-icons/bi";
 import { FaHospitalSymbol } from "react-icons/fa";
@@ -8,10 +8,10 @@ import { GiBigWave } from "react-icons/gi";
 import Login from "../components/login";
 import "./authentic.css";
 export default function Authentic() {
-  const [isOpenForm, setisOpenForm]= useState<boolean>(true)
   const router = useRouter()
-  const handleLoginBtn = (event:React.MouseEvent<HTMLButtonElement>)=>{
-    event.preventDefault()
+  const [isOpenForm, setisOpenForm]= useState<boolean>(true)
+  const handleLoginBtn = ()=>{
+    // event.preventDefault()
     router.push("./dashboard")
   }
   const handleChangeForm = ()=>{
@@ -28,7 +28,7 @@ export default function Authentic() {
         {isOpenForm ? (
             <Login changeToRegister={handleChangeForm} />
           ) : (
-            <Register changeToLogin={handleChangeForm} />
+            <Register changeToLogin={handleChangeForm} todashboard={handleLoginBtn} />
           )}
         </div>
       </div>

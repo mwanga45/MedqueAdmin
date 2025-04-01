@@ -10,19 +10,20 @@ export default interface Staff {
 }
 interface changeToLogin {
     changeToLogin: ()=> void
-}
-interface Todashboard{
     todashboard:()=> void
 }
-export default function Register({changeToLogin}:changeToLogin,{todashboard}:Todashboard) {
+// interface Todashboard{
+// }
+export default function Register({changeToLogin,todashboard}:changeToLogin) {
     const [CloseForm, setCloseForm] = useState<boolean>(false)
     const handleToLogin = (event:React.MouseEvent<HTMLButtonElement>)=>{
         event.preventDefault()
-        setCloseForm(!CloseForm)
+        // setCloseForm(!CloseForm)
         changeToLogin()
     }
-    const handleRegister = (event:React.MouseEvent<HTMLButtonElement>){
-        
+    const handleRegister = (event:React.MouseEvent<HTMLButtonElement>)=>{
+      event.preventDefault()
+      todashboard()
     }
   return (
     <div className="reg-container">
@@ -51,7 +52,7 @@ export default function Register({changeToLogin}:changeToLogin,{todashboard}:Tod
             <input type="password" name="password-confirm" id="RegNumber" placeholder="Re type your password to confirm"/>
         </div>
         <div className="regbtn-container">
-            <button type="submit" name="Submit" className="reg-btn">Register</button>
+            <button type="submit" name="Submit" className="reg-btn" onClick={handleRegister}>Register</button>
         </div>
         <div className="cross-line">
         </div>
