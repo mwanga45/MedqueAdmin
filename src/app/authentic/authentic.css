@@ -103,6 +103,8 @@
  }
  .reg-btn{
     width: 100%;
+    color: #edffff;
+    cursor: pointer;
     height: 5svh;
     border-radius: 5px;
     background-color: rgb(3, 3, 72);
@@ -186,6 +188,8 @@
 }
 .log-btn{
    width: 100%;
+   color: #edffff;
+   cursor: pointer;
    height: 5svh;
    border-radius: 5px;
    background-color: rgb(3, 3, 72);

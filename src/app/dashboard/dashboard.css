@@ -1,12 +1,8 @@
 .dash-container{
     display: grid;
-    grid-template-columns: 1fr 3fr;
+    grid-template-columns: 1fr 4fr;
     grid-template-rows: auto auto;
-    padding-top:3px;
-    
-    
-    
-    
+    padding-top:3px; 
 }
 .dash-sidebar{
     position: fixed;
@@ -35,6 +31,7 @@
     height: 75svh;
     border-radius: 5px;
     padding: 2px;
+    margin-top: 4px;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
 }
 
