@@ -66,9 +66,6 @@ export default function ServicePopup() {
     }
 
   }
-
-
-
   return (
     <div className="app-container">
       <button className="open-popup-btn" onClick={() => setIsOpen(true)}>
