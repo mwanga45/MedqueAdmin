@@ -1,14 +1,14 @@
 "use client"
 import { useEffect, useState } from "react"
 import axios from "axios"
-import { apiurl} from "../Apiurl"
+import { apiurl } from "../Apiurl"
 import { FaTimes, FaPlus, FaList, FaUser, FaEnvelope, FaPhone, FaBuilding, FaServicestack } from "react-icons/fa"
 
 interface Service {
-  id :number
-  servicename:string
-  duration_minutes :number
-  fee :Float32Array
+  id: number
+  servicename: string
+  duration_minutes: number
+  fee: Float32Array
   consultantFeee: string
   created_at: string
 
@@ -22,26 +22,26 @@ export default function ServicePopup() {
   const [services, setServices] = useState<Service[]>([])
 
   const [formData, setFormData] = useState({
-    servname:"",
-    duration_time:0,
-    fee:0
+    servname: "",
+    duration_time: 0,
+    fee: 0
   })
-  const handlegetregisteredServ = async()=>{
-    try{
-      const res  =  await axios.get(apiurl+"booking/getservice")
-      if (res.data.success === false){
+  const handlegetregisteredServ = async () => {
+    try {
+      const res = await axios.get(apiurl + "booking/getservice")
+      if (res.data.success === false) {
         alert(res.data.message)
       }
       setServices(res.data.data)
 
-    }catch(err){
+    } catch (err) {
       alert("Internal server Error")
       console.error("something went wrong", err)
     }
   }
-  useEffect(()=>{
-   handlegetregisteredServ()
-},[])
+  useEffect(() => {
+    handlegetregisteredServ()
+  },[])
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target
@@ -51,20 +51,24 @@ export default function ServicePopup() {
     }))
   }
 
-  const handleSubmit = async(e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    try{
-      const res =  await axios.post(apiurl +"adim/registerserv",formData)
-       if (res.data.success == false){
-        alert(res.data.message||"Something went wrong")
-       }else if (res.data.success == true){
-          alert(res.data.message&&res.data.data)
-       }
-    }catch (err){
+    try {
+      const res = await axios.post(apiurl + "adim/registerserv", formData)
+      if (res.data.success == false) {
+        alert(res.data.message || "Something went wrong")
+      } else if (res.data.success == true) {
+        alert(res.data.message && res.data.data)
+        setFormData({
+          servname: "",
+          duration_time: 0,
+          fee: 0
+        })
+      }
+    } catch (err) {
       alert(err)
       console.log("Something went wrong", err)
     }
-
   }
   return (
     <div className="app-container">
@@ -196,7 +200,7 @@ export default function ServicePopup() {
                         />
                       </div> */}
 
-                      {/* <div className="form-group">
+                    {/* <div className="form-group">
                         <label htmlFor="phone">
                           <FaPhone /> Phone
                         </label>
@@ -211,7 +215,7 @@ export default function ServicePopup() {
                         />
                       </div>
                     </div> */}
-{/* 
+                    {/* 
                     <div className="form-group">
                       <label htmlFor="category">
                         <FaBuilding /> Category

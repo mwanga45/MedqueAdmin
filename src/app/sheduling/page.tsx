@@ -1,9 +1,11 @@
 "use client"
 
 import type React from "react"
+import axios from "axios"
 
 import { useState } from "react"
 import "./sheduling.css"
+import { apiurl } from "../Apiurl"
 
 interface Doctor {
   doctor_id: number
@@ -107,9 +109,15 @@ export default function DoctorManagement() {
 
   const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
 
-  const handleScheduleSubmit = (e: React.FormEvent) => {
+  const handleScheduleSubmit = async(e: React.FormEvent) => {
     e.preventDefault()
-    console.log("Schedule submitted:", scheduleForm)
+   try{
+    const res =await axios.post(apiurl+"admin/")
+
+   }catch(err){
+    console.error(err)
+    alert(err)
+   }
     alert("Schedule registered successfully!")
     setScheduleForm({
       doctor_id: "",
@@ -119,9 +127,19 @@ export default function DoctorManagement() {
     })
   }
 
-  const handleSpecialistSubmit = (e: React.FormEvent) => {
+  const handleSpecialistSubmit = async(e: React.FormEvent) => {
     e.preventDefault()
-    console.log("Specialist submitted:", specialistForm)
+    try{
+      const res =  await axios.post(apiurl+"adim/regspecilist",specialistForm)
+
+      if (res.data.success === false){
+        alert(res.data.message)
+      }
+      alert(res.data.message+res.data.data)
+    }catch(err){
+      console.error("something went wrong", err)
+      alert("Internal Error status Error 500")
+    }
     alert("Specialist added successfully!")
     setSpecialistForm({
       specialist: "",
