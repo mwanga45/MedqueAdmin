@@ -74,6 +74,7 @@
     padding-left: 5%;
     margin-top: 12px;
     margin-bottom: 22px;
+    cursor: pointer;
 }
 .navlink-container ul{
     display: flex;

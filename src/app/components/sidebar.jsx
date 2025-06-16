@@ -9,8 +9,10 @@ import { IoNotifications } from "react-icons/io5";
 import { FaCodeMerge } from "react-icons/fa6";
 import { GrSchedules } from "react-icons/gr";
 import { FaUserEdit } from "react-icons/fa";
+import ServicePopup from "../components/serviceRegpopup"
 
 export default function Sidebar() {
+
   return (
     <div  className='nav-container'>
         <div className="nav-upper">
@@ -27,11 +29,13 @@ export default function Sidebar() {
             <li><MdDashboard/></li>
           </ul>
         </div>
-        <div className="navlink-container">
+        <div className="navlink-container" >
+          <button onClick={()=><ServicePopup/> }>
           <ul>
             <li>Staff Registration</li>
             <li><FaUserEdit /></li>
           </ul>
+          </button>
         </div>
         <div className="navlink-container">
           <ul>

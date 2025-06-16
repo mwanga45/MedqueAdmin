@@ -33,9 +33,6 @@ export default function Dashboard() {
           <div className="optional-dash">
             <p>Doctor</p>
           </div>
-          {/* <div className="optional-dash">
-                <p>Booking</p>
-            </div> */}
         </div>
         <div className="Upper-searchbar">
           <input type="text" name="search" placeholder="search" />
