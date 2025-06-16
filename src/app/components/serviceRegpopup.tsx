@@ -1,61 +1,47 @@
 "use client"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import axios from "axios"
 import { apiurl} from "../Apiurl"
 import { FaTimes, FaPlus, FaList, FaUser, FaEnvelope, FaPhone, FaBuilding, FaServicestack } from "react-icons/fa"
 
 interface Service {
-  id: number
-  name: string
-  provider: string
-  email: string
-  phone: string
-  description: string
-  category: string
-  // servname :string
-  // duration_minutes :number
-  // fee :Float32Array
+  id :number
+  servicename:string
+  duration_minutes :number
+  fee :Float32Array
+  consultantFeee: string
+  created_at: string
 
 }
+
+
 
 export default function ServicePopup() {
   const [isOpen, setIsOpen] = useState(false)
   const [activeTab, setActiveTab] = useState<"list" | "register">("list")
-  const [services, setServices] = useState<Service[]>([
-    {
-      id: 1,
-      name: "Web Development",
-      provider: "John Doe",
-      email: "john@example.com",
-      phone: "+1234567890",
-      description: "Full-stack web development services",
-      category: "Technology",
-    },
-    {
-      id: 2,
-      name: "Graphic Design",
-      provider: "Jane Smith",
-      email: "jane@example.com",
-      phone: "+1234567891",
-      description: "Creative graphic design solutions",
-      category: "Design",
-    },
-    {
-      id: 3,
-      name: "Digital Marketing",
-      provider: "Mike Johnson",
-      email: "mike@example.com",
-      phone: "+1234567892",
-      description: "SEO and social media marketing",
-      category: "Marketing",
-    },
-  ])
+  const [services, setServices] = useState<Service[]>([])
 
   const [formData, setFormData] = useState({
     servname:"",
-    duration_time:"",
+    duration_time:0,
     fee:0
   })
+  const handlegetregisteredServ = async()=>{
+    try{
+      const res  =  await axios.get(apiurl+"booking/getservice")
+      if (res.data.success === false){
+        alert(res.data.message)
+      }
+      setServices(res.data.data)
+
+    }catch(err){
+      alert("Internal server Error")
+      console.error("something went wrong", err)
+    }
+  }
+  useEffect(()=>{
+   handlegetregisteredServ()
+},[])
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target
@@ -68,18 +54,20 @@ export default function ServicePopup() {
   const handleSubmit = async(e: React.FormEvent) => {
     e.preventDefault()
     try{
-      const res =  await axios.post( apiurl +"registerserv",formData)
+      const res =  await axios.post(apiurl +"adim/registerserv",formData)
        if (res.data.success == false){
         alert(res.data.message||"Something went wrong")
+       }else if (res.data.success == true){
+          alert(res.data.message&&res.data.data)
        }
     }catch (err){
-      alert()
+      alert(err)
       console.log("Something went wrong", err)
     }
 
   }
 
-  const categories = ["Technology", "Design", "Marketing", "Consulting", "Healthcare", "Education", "Finance"]
+
 
   return (
     <div className="app-container">
@@ -126,21 +114,21 @@ export default function ServicePopup() {
                       {services.map((service) => (
                         <div key={service.id} className="service-card">
                           <div className="service-header">
-                            <h4>{service.name}</h4>
-                            <span className="category-badge">{service.category}</span>
+                            <h4>{service.servicename}</h4>
+                            <span className="category-badge">{service.id}</span>
                           </div>
                           <div className="service-details">
                             <div className="detail-item">
-                              <FaUser /> <span>{service.provider}</span>
+                              <FaUser /> <span>{service.duration_minutes}</span>
                             </div>
                             <div className="detail-item">
-                              <FaEnvelope /> <span>{service.email}</span>
+                              <FaEnvelope /> <span>{service.fee}</span>
                             </div>
                             <div className="detail-item">
-                              <FaPhone /> <span>{service.phone}</span>
+                              <FaPhone /> <span>{service.created_at}</span>
                             </div>
                           </div>
-                          <p className="service-description">{service.description}</p>
+                          <p className="service-description">none</p>
                         </div>
                       ))}
                     </div>
@@ -170,12 +158,12 @@ export default function ServicePopup() {
                         <FaUser /> Provider Name
                       </label>
                       <input
-                        type="text"
+                        type="number"
                         id="provider"
                         name="duration_time"
                         value={formData.duration_time}
                         onChange={handleInputChange}
-                        placeholder="Enter provider name"
+                        placeholder="Enter time required"
                         required
                       />
                     </div>
