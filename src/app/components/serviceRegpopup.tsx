@@ -1,5 +1,7 @@
 "use client"
 import { useState } from "react"
+import axios from "axios"
+import { apiurl} from "../Apiurl"
 import { FaTimes, FaPlus, FaList, FaUser, FaEnvelope, FaPhone, FaBuilding, FaServicestack } from "react-icons/fa"
 
 interface Service {
@@ -10,6 +12,10 @@ interface Service {
   phone: string
   description: string
   category: string
+  // servname :string
+  // duration_minutes :number
+  // fee :Float32Array
+
 }
 
 export default function ServicePopup() {
@@ -46,12 +52,9 @@ export default function ServicePopup() {
   ])
 
   const [formData, setFormData] = useState({
-    name: "",
-    provider: "",
-    email: "",
-    phone: "",
-    description: "",
-    category: "",
+    servname:"",
+    duration_time:"",
+    fee:0
   })
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -62,22 +65,18 @@ export default function ServicePopup() {
     }))
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async(e: React.FormEvent) => {
     e.preventDefault()
-    const newService: Service = {
-      id: services.length + 1,
-      ...formData,
+    try{
+      const res =  await axios.post( apiurl +"registerserv",formData)
+       if (res.data.success == false){
+        alert(res.data.message||"Something went wrong")
+       }
+    }catch (err){
+      alert()
+      console.log("Something went wrong", err)
     }
-    setServices((prev) => [...prev, newService])
-    setFormData({
-      name: "",
-      provider: "",
-      email: "",
-      phone: "",
-      description: "",
-      category: "",
-    })
-    setActiveTab("list")
+
   }
 
   const categories = ["Technology", "Design", "Marketing", "Consulting", "Healthcare", "Education", "Finance"]
@@ -158,8 +157,8 @@ export default function ServicePopup() {
                       <input
                         type="text"
                         id="name"
-                        name="name"
-                        value={formData.name}
+                        name="servname"
+                        value={formData.servname}
                         onChange={handleInputChange}
                         placeholder="Enter service name"
                         required
@@ -173,31 +172,46 @@ export default function ServicePopup() {
                       <input
                         type="text"
                         id="provider"
-                        name="provider"
-                        value={formData.provider}
+                        name="duration_time"
+                        value={formData.duration_time}
                         onChange={handleInputChange}
                         placeholder="Enter provider name"
                         required
                       />
                     </div>
 
-                    <div className="form-row">
+                    <div className="form-group">
+                      <label htmlFor="provider">
+                        <FaUser /> Provider Name
+                      </label>
+                      <input
+                        type='number'
+                        id="provider"
+                        name="fee"
+                        value={formData.fee}
+                        onChange={handleInputChange}
+                        placeholder="Enter provider name"
+                        required
+                      />
+                    </div>
+
+                    {/* <div className="form-row">
                       <div className="form-group">
                         <label htmlFor="email">
                           <FaEnvelope /> Email
                         </label>
                         <input
-                          type="email"
+                          type="number"
                           id="email"
                           name="email"
-                          value={formData.email}
+                          value={formData.fee}
                           onChange={handleInputChange}
                           placeholder="Enter email address"
                           required
                         />
-                      </div>
+                      </div> */}
 
-                      <div className="form-group">
+                      {/* <div className="form-group">
                         <label htmlFor="phone">
                           <FaPhone /> Phone
                         </label>
@@ -211,8 +225,8 @@ export default function ServicePopup() {
                           required
                         />
                       </div>
-                    </div>
-
+                    </div> */}
+{/* 
                     <div className="form-group">
                       <label htmlFor="category">
                         <FaBuilding /> Category
@@ -231,9 +245,9 @@ export default function ServicePopup() {
                           </option>
                         ))}
                       </select>
-                    </div>
+                    </div> */}
 
-                    <div className="form-group">
+                    {/* <div className="form-group">
                       <label htmlFor="description">Description</label>
                       <textarea
                         id="description"
@@ -244,7 +258,7 @@ export default function ServicePopup() {
                         rows={4}
                         required
                       />
-                    </div>
+                    </div> */}
 
                     <div className="form-actions">
                       <button type="button" className="cancel-btn" onClick={() => setActiveTab("list")}>

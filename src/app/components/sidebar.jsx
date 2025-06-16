@@ -11,7 +11,7 @@ import { GrSchedules } from "react-icons/gr";
 import { FaUserEdit } from "react-icons/fa";
 import ServicePopup from "../components/serviceRegpopup"
 
-export default function Sidebar() {
+export default function Sidebar({onClickstaff}) {
 
   return (
     <div  className='nav-container'>
@@ -29,13 +29,11 @@ export default function Sidebar() {
             <li><MdDashboard/></li>
           </ul>
         </div>
-        <div className="navlink-container" >
-          <button onClick={()=><ServicePopup/> }>
+        <div className="navlink-container" onClick={onClickstaff} >
           <ul>
             <li>Staff Registration</li>
             <li><FaUserEdit /></li>
           </ul>
-          </button>
         </div>
         <div className="navlink-container">
           <ul>

@@ -1,17 +1,21 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import MainTb from "../components/animate-table";
 import AnimatedTable from "../components/table";
 import "./dashboard.css";
 import { FaSearch } from "react-icons/fa";
 import Sidebar from "../components/sidebar";
 import { BiHealth } from "react-icons/bi";
+import ServicePopup from "../components/serviceRegpopup"
 export default function Dashboard() {
-  const handlesidebar = () => {};
+  const  [isstaffOpen, setisstaffopen] = useState(false)
+  const handleisopen = ()=>{
+     setisstaffopen(!isstaffOpen)
+  }
   return (
     <div className="dash-container">
       <div className="dash-sidebar">
-        <Sidebar />
+        <Sidebar onClickstaff={handleisopen} />
       </div>
       <div className="dash-upperboard">
         <div className="unv-title">
@@ -40,7 +44,10 @@ export default function Dashboard() {
         </div>
       </div>
       <div className="dash-maincontainer">
-        <AnimatedTable />
+        {
+          isstaffOpen?<ServicePopup/>  :
+           <AnimatedTable />
+        }
       </div>
     </div>
   );
