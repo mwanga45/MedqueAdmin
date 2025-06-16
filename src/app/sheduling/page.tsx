@@ -2,8 +2,8 @@
 
 import type React from "react"
 import axios from "axios"
-
 import { useState } from "react"
+ import { ToastContainer, toast } from 'react-toastify';
 import "./sheduling.css"
 import { apiurl } from "../Apiurl"
 
@@ -133,12 +133,12 @@ export default function DoctorManagement() {
       const res =  await axios.post(apiurl+"adim/regspecilist",specialistForm)
 
       if (res.data.success === false){
-        alert(res.data.message)
+        toast.error(res.data.message)
       }
-      alert(res.data.message+res.data.data)
+      toast.success(res.data.message+res.data.data)
     }catch(err){
       console.error("something went wrong", err)
-      alert("Internal Error status Error 500")
+      toast.error("Internal Error status Error 500")
     }
     alert("Specialist added successfully!")
     setSpecialistForm({
@@ -154,6 +154,7 @@ export default function DoctorManagement() {
 
   return (
     <div className="container">
+        <ToastContainer/>
       <header className="header">
         <h1>Doctor Management System</h1>
       </header>
