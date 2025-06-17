@@ -9,26 +9,26 @@ import Login from "../components/login";
 import "./authentic.css";
 export default function Authentic() {
   const router = useRouter()
-  const [isOpenForm, setisOpenForm]= useState<boolean>(true)
-  const handleChangeForm = ()=>{
+  const [isOpenForm, setisOpenForm] = useState<boolean>(true)
+  const handleChangeForm = () => {
     setisOpenForm(!isOpenForm)
   }
   return (
     <div className="authentic-container">
       <div className="left-Acontainer">
-        <div className="left-svg">
-          <FaHospitalSymbol />
-          <GiBigWave />
-        </div>
         <div className="form-register">
-        {isOpenForm ? (
-            <Login changeToRegister={handleChangeForm}/>
+          {isOpenForm ? (
+            <Login changeToRegister={handleChangeForm} />
           ) : (
-            <Register changeToLogin={handleChangeForm}/>
+            <Register changeToLogin={handleChangeForm} />
           )}
         </div>
       </div>
       <div className="right-Acontainer">
+        <div className="left-svg">
+          <FaHospitalSymbol color="green" />
+          <GiBigWave color="white"/>
+        </div>
         <div className="right-content">
           <BiHealth />
           <p className="right-title">Welcome To Medqueue</p>
@@ -40,7 +40,7 @@ export default function Authentic() {
               alignItems: "center",
             }}
           >
-            <p style={{width:"60%"}}>
+            <p style={{ width: "60%" }}>
               Let us make our country health service better and make our time
               more worth with Mequeue
             </p>
