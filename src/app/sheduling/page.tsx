@@ -2,10 +2,11 @@
 
 import type React from "react"
 import axios from "axios"
-import { useState,useEffect } from "react"
- import { ToastContainer, toast } from 'react-toastify';
+import { useState, useEffect } from "react"
+import { ToastContainer, toast } from 'react-toastify';
 import "./sheduling.css"
 import { apiurl } from "../Apiurl"
+
 
 interface Doctor {
   doctor_id: number
@@ -81,73 +82,77 @@ export default function DoctorManagement() {
     },
   ]
 
-  
+
 
   const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
 
-  const handleScheduleSubmit = async(e: React.FormEvent) => {
+  const handleScheduleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-   try{
-    const res = await axios.post(apiurl+"admin/")
-
-   }catch(err){
-    console.error(err)
-    alert(err)
-   }
-    alert("Schedule registered successfully!")
-    setScheduleForm({
-      doctor_id: "",
-      day_of_week: "",
-      start_time: "",
-      end_time: "",
-    })
-  }
-const handlefetchexistspecilist = async()=>{
-    try{
-
-        const res =  await axios.get(apiurl+"adim/getspecInfo")
-        if (res.data.success === false){
-            toast.error(res.data.message)
-            return
-        }
-        setspecialists(res.data.data)
-    }catch(err){
-        toast.error("Something went wrong")
-        console.log("Something went wrong ",err)
+    try {
+      const res = await axios.post(apiurl + "admin/docshedule", scheduleForm)
+      if (res.data.success === false) {
+        toast.error(res.data.message)
+        return
+      }
+      toast.error("Schedule registered successfully!")
+      setScheduleForm({
+        doctor_id: "",
+        day_of_week: "",
+        start_time: "",
+        end_time: "",
+      })
+    } catch (err) {
+      console.error(err)
+      toast.error("Something went wrong")
+      return
     }
-}
-  const handleSpecialistSubmit = async(e: React.FormEvent) => {
-    e.preventDefault()
-    try{
-      const res =  await axios.post(apiurl+"adim/regspecilist",specialistForm)
+  }
+  const handlefetchexistspecilist = async () => {
+    try {
 
-      if (res.data.success === false){
+      const res = await axios.get(apiurl + "adim/getspecInfo")
+      if (res.data.success === false) {
+        toast.error(res.data.message)
+        return
+      }
+      setspecialists(res.data.data)
+    } catch (err) {
+      toast.error("Something went wrong")
+      console.log("Something went wrong ", err)
+    }
+  }
+  const handleSpecialistSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    try {
+      const res = await axios.post(apiurl + "adim/regspecilist", specialistForm)
+
+      if (res.data.success === false) {
         toast.error(res.data.message)
         return
       }
       toast.success(res.data.message)
       setSpecialistForm({
-      specialist: "",
-      description: "",
-    })
-    }catch(err){
+        specialist: "",
+        description: "",
+      })
+    } catch (err) {
       console.error("something went wrong", err)
       toast.error("Internal Error status Error 500")
     }
-    
+
   }
 
   const selectDoctor = (doctorId: number) => {
     setScheduleForm((prev) => ({ ...prev, doctor_id: doctorId.toString() }))
     setShowDoctorPopup(false)
   }
-  useEffect(()=>{
+  useEffect(() => {
     handlefetchexistspecilist()
-  },[])
+  }, [])
 
   return (
     <div className="container">
-        <ToastContainer/>
+      <ToastContainer />
       <header className="header">
         <h1>Doctor Management System</h1>
       </header>
@@ -211,7 +216,6 @@ const handlefetchexistspecilist = async()=>{
                 required
               />
             </div>
-
             <button type="submit" className="btn btn-success">
               Register Schedule
             </button>

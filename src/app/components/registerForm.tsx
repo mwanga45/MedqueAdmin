@@ -61,7 +61,7 @@ export default function Register({ changeToLogin, }: changeToLogin) {
     const handlesubmit = async (e: React.FormEvent) => {
         e.preventDefault()
         try {
-            const res = await axios.post(apiurl + "dkt/register", formData)
+            const res = await axios.post(apiurl+"dkt/register", formData)
             if (res.data.success === false) {
                 toast.error(res.data.message)
                 return
@@ -89,6 +89,7 @@ export default function Register({ changeToLogin, }: changeToLogin) {
                 return
             }
             setspecInfo(res.data.data)
+            alert("Press button login  login")
         } catch (err) {
             console.error("Something went wrong")
             toast.error("Internal serverError  status:500")
