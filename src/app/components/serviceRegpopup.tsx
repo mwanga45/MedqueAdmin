@@ -156,7 +156,7 @@ export default function ServicePopup() {
 
                     <div className="form-group">
                       <label htmlFor="provider">
-                        <FaUser /> Provider Name
+                        <FaUser /> DurationTime
                       </label>
                       <input
                         type="number"
@@ -171,7 +171,7 @@ export default function ServicePopup() {
 
                     <div className="form-group">
                       <label htmlFor="provider">
-                        <FaUser /> Provider Name
+                        <FaUser /> Consultant Fee
                       </label>
                       <input
                         type='number'
@@ -179,7 +179,7 @@ export default function ServicePopup() {
                         name="fee"
                         value={formData.fee}
                         onChange={handleInputChange}
-                        placeholder="Enter provider name"
+                        placeholder="Enter consultant fee"
                         required
                       />
                     </div>

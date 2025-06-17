@@ -2,7 +2,7 @@
 
 import type React from "react"
 import axios from "axios"
-import { useState } from "react"
+import { useState,useEffect } from "react"
  import { ToastContainer, toast } from 'react-toastify';
 import "./sheduling.css"
 import { apiurl } from "../Apiurl"
@@ -16,7 +16,6 @@ interface Doctor {
 }
 
 interface Specialist {
-  id: number
   specialist: string
   description: string
 }
@@ -36,6 +35,7 @@ interface SpecialistForm {
 export default function DoctorManagement() {
   const [showDoctorPopup, setShowDoctorPopup] = useState(false)
   const [showSpecialistPopup, setShowSpecialistPopup] = useState(false)
+  const [specialists, setspecialists] = useState<Specialist[]>([])
 
   const [scheduleForm, setScheduleForm] = useState<ScheduleForm>({
     doctor_id: "",
@@ -81,38 +81,14 @@ export default function DoctorManagement() {
     },
   ]
 
-  const specialists: Specialist[] = [
-    {
-      id: 1,
-      specialist: "Cardiology",
-      description:
-        "Specializes in heart and cardiovascular system disorders, including heart disease, arrhythmias, and heart failure.",
-    },
-    {
-      id: 2,
-      specialist: "Neurology",
-      description:
-        "Focuses on disorders of the nervous system, including brain, spinal cord, and nerve-related conditions.",
-    },
-    {
-      id: 3,
-      specialist: "Pediatrics",
-      description:
-        "Provides medical care for infants, children, and adolescents, focusing on their physical and mental development.",
-    },
-    {
-      id: 4,
-      specialist: "Orthopedics",
-      description: "Treats musculoskeletal system disorders, including bones, joints, ligaments, tendons, and muscles.",
-    },
-  ]
+  
 
   const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
 
   const handleScheduleSubmit = async(e: React.FormEvent) => {
     e.preventDefault()
    try{
-    const res =await axios.post(apiurl+"admin/")
+    const res = await axios.post(apiurl+"admin/")
 
    }catch(err){
     console.error(err)
@@ -126,7 +102,20 @@ export default function DoctorManagement() {
       end_time: "",
     })
   }
+const handlefetchexistspecilist = async()=>{
+    try{
 
+        const res =  await axios.get(apiurl+"adim/getspecInfo")
+        if (res.data.success === false){
+            toast.error(res.data.message)
+            return
+        }
+        setspecialists(res.data.data)
+    }catch(err){
+        toast.error("Something went wrong")
+        console.log("Something went wrong ",err)
+    }
+}
   const handleSpecialistSubmit = async(e: React.FormEvent) => {
     e.preventDefault()
     try{
@@ -134,23 +123,27 @@ export default function DoctorManagement() {
 
       if (res.data.success === false){
         toast.error(res.data.message)
+        return
       }
-      toast.success(res.data.message+res.data.data)
+      toast.success(res.data.message)
+      setSpecialistForm({
+      specialist: "",
+      description: "",
+    })
     }catch(err){
       console.error("something went wrong", err)
       toast.error("Internal Error status Error 500")
     }
-    alert("Specialist added successfully!")
-    setSpecialistForm({
-      specialist: "",
-      description: "",
-    })
+    
   }
 
   const selectDoctor = (doctorId: number) => {
     setScheduleForm((prev) => ({ ...prev, doctor_id: doctorId.toString() }))
     setShowDoctorPopup(false)
   }
+  useEffect(()=>{
+    handlefetchexistspecilist()
+  },[])
 
   return (
     <div className="container">
@@ -312,10 +305,10 @@ export default function DoctorManagement() {
             </div>
             <div className="popup-body">
               <div className="specialist-list">
-                {specialists.map((specialist) => (
-                  <div key={specialist.id} className="specialist-card">
-                    <h4>{specialist.specialist}</h4>
-                    <p>{specialist.description}</p>
+                {specialists.map((s) => (
+                  <div key={s.specialist} className="specialist-card">
+                    <h4>{s.specialist}</h4>
+                    <p>{s.description}</p>
                   </div>
                 ))}
               </div>
