@@ -89,12 +89,12 @@ export default function DoctorManagement() {
   const handleScheduleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     try {
-      const res = await axios.post(apiurl + "admin/docshedule", scheduleForm)
+      const res = await axios.post(apiurl + "adim/docshedule",scheduleForm)
       if (res.data.success === false) {
         toast.error(res.data.message)
         return
       }
-      toast.error("Schedule registered successfully!")
+      toast.success("Schedule registered successfully!")
       setScheduleForm({
         doctor_id: "",
         day_of_week: "",
@@ -117,7 +117,7 @@ export default function DoctorManagement() {
       }
       setspecialists(res.data.data)
     } catch (err) {
-      toast.error("Something went wrong")
+      toast.error("Error")
       console.log("Something went wrong ", err)
     }
   }
