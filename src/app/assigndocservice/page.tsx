@@ -1,167 +1,151 @@
-"use client"
+"use client";
+
 import React, { useState, useEffect, useRef } from 'react';
-import { FaFilter, FaChevronDown, FaSearch } from 'react-icons/fa';
+import { FaFilter, FaSearch } from 'react-icons/fa';
 import axios from 'axios';
 import './AppointmentPage.css';
-import { strict } from 'assert';
 import { toast, ToastContainer } from 'react-toastify';
 import { apiurl } from '../Apiurl';
+import AnimatedTable from '../components/table';
 
-interface Doctor {
-  id: string;
-  name: string;
-  specialty: string;
+interface DoctorInfo {
+  doctor_id: number;
+  doctorname: string;
 }
 
-interface Service {
-  id: string;
-  name: string;
-  category: string;
+interface ServiceInfo {
+  serv_id: number;
+  servicename: string;
 }
-interface Requestpayload {
-    serviceId :string
-    doctor_id :string
+
+interface CombinedResponse {
+  doctors: DoctorInfo[];
+  services: ServiceInfo[];
 }
-interface Serv8DocReturn{
-    doctor_id :string;
-    doctorname:string
-    serv_id:string;
-    servname:string
+
+interface RequestPayload {
+  doctor_id: string;
+  serviceId: string;
 }
 
 const AppointmentPage: React.FC = () => {
-  // Sample data
-  const doctors: Doctor[] = [
-    { id: 'd1', name: 'Dr. Sarah Johnson', specialty: 'Cardiology' },
-    { id: 'd2', name: 'Dr. Michael Chen', specialty: 'Neurology' },
-    { id: 'd3', name: 'Dr. Emily Rodriguez', specialty: 'Pediatrics' },
-    { id: 'd4', name: 'Dr. James Wilson', specialty: 'Orthopedics' },
-    { id: 'd5', name: 'Dr. Lisa Patel', specialty: 'Dermatology' },
-  ];
-
-  const services: Service[] = [
-    { id: 's1', name: 'General Checkup', category: 'Preventive Care' },
-    { id: 's2', name: 'MRI Scan', category: 'Diagnostics' },
-    { id: 's3', name: 'Vaccination', category: 'Immunization' },
-    { id: 's4', name: 'Physical Therapy', category: 'Rehabilitation' },
-    { id: 's5', name: 'Dental Cleaning', category: 'Dentistry' },
-  ];
-
-
   const [doctorFilter, setDoctorFilter] = useState('');
   const [serviceFilter, setServiceFilter] = useState('');
   const [showDoctorFilter, setShowDoctorFilter] = useState(false);
   const [showServiceFilter, setShowServiceFilter] = useState(false);
-  const [selectedDoctor, setSelectedDoctor] = useState('');
-  const [selectedService, setSelectedService] = useState('');
   const [isMounted, setIsMounted] = useState(false);
-// mine
- const [docvsServ, setdocvsServ] = useState<Serv8DocReturn[]>([])
- const [selectedRequest, setselectedRequest] = useState<Requestpayload>({
-    serviceId:"",
-    doctor_id:""
- })
- const handleOnchangeEvent = (e:React.ChangeEvent<HTMLSelectElement>)=>{
-    const {}
- }
- const handleDocsvServ = async()=>{
-    try{
-        const res = await axios.get(apiurl+"adim/DocVsServ")
-        if (res.data.success ===false){
-            toast.error(res.data.message)
-            return
-        }
-        toast.success(res.data.message)
-        setdocvsServ(res.data.data)
-    }catch(err){
-        toast.error("Error 500")
-        console.error(err)
-    }
 
- }
-  
+  const [doctors, setDoctors] = useState<DoctorInfo[]>([]);
+  const [services, setServices] = useState<ServiceInfo[]>([]);
+  const [selectedRequest, setSelectedRequest] = useState<RequestPayload>({
+    doctor_id: "",
+    serviceId: ""
+  });
+
+  const fetchLists = async () => {
+    try {
+      const res = await axios.get(apiurl + "adim/DocVsServ");
+      if (!res.data.success) {
+        toast.error(res.data.message);
+        return;
+      }
+      const data: CombinedResponse = res.data.data;
+      setDoctors(data.doctors ?? []);
+      setServices(data.services ?? []);
+    } catch (err) {
+      toast.error("Error fetching lists");
+      console.error(err);
+    }
+  };
+
   const doctorFilterRef = useRef<HTMLDivElement>(null);
   const serviceFilterRef = useRef<HTMLDivElement>(null);
 
-
-  const filteredDoctors = docvsServ.filter(doctor => 
-    doctor.doctorname.toLowerCase().includes(doctorFilter.toLowerCase())
+  
+  const filteredDoctors = doctors.filter(d =>
+    d.doctorname.toLowerCase().includes(doctorFilter.trim().toLowerCase())
   );
 
-  const filteredServices = docvsServ.filter(service => 
-    service.servname.toLowerCase().includes(serviceFilter.toLowerCase()) 
-  );
 
+  const filteredServices = services.filter(s =>
+    s.servicename.toLowerCase().includes(serviceFilter.trim().toLowerCase())
+  );
 
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (doctorFilterRef.current && !doctorFilterRef.current.contains(event.target as Node)) {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (doctorFilterRef.current && !doctorFilterRef.current.contains(e.target as Node)) {
         setShowDoctorFilter(false);
       }
-      if (serviceFilterRef.current && !serviceFilterRef.current.contains(event.target as Node)) {
+      if (serviceFilterRef.current && !serviceFilterRef.current.contains(e.target as Node)) {
         setShowServiceFilter(false);
       }
-      handleDocsvServ()
     };
-
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  
   useEffect(() => {
     setIsMounted(true);
+    fetchLists();
   }, []);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async(e: React.FormEvent) => {
     e.preventDefault();
-    if (selectedDoctor && selectedService) {
-      alert(`Appointment booked with ${selectedDoctor} for ${selectedService}`);
-    } else {
-      alert('Please select both a doctor and a service');
-    }
+       try{
+        const res = await axios.post(apiurl+"adim/docAsgnServ",selectedRequest)
+         if (res.data.success ===false){
+          toast.error(res.data.message)
+          return
+         }
+         toast.success("Successfuly Accomplish request")
+        
+       }catch(err){
+        console.error(err)
+        toast.error("Network Error")
+       }
+    console.log(selectedRequest);
   };
 
   return (
+    <div>
     <div className={`page-container ${isMounted ? 'mounted' : ''}`}>
-        <ToastContainer/>
+      <ToastContainer />
       <div className="header">
-        <h1 className="title">Medical Appointment</h1>
-        <p className="subtitle">Select your doctor and service</p>
+        <h1 className="title">Admin Center</h1>
+        <p className="subtitle">Select your doctor and service for Assign the Service</p>
       </div>
 
       <form onSubmit={handleSubmit} className="appointment-form">
-        
         <div className="form-group">
           <label htmlFor="doctor-select" className="form-label">
             Select a Doctor:
           </label>
-          
           <div className="select-wrapper" ref={doctorFilterRef}>
             <div className="select-header">
               <select
                 id="doctor-select"
                 value={selectedRequest.doctor_id}
-                onChange={(e) => setSelectedDoctor(e.target.value)}
+                onChange={e =>
+                  setSelectedRequest(prev => ({ ...prev, doctor_id: e.target.value }))
+                }
                 className="form-select"
                 required
               >
                 <option value="">Choose a doctor...</option>
-                {filteredDoctors.map(doctor => (
-                  <option key={doctor.doctor_id} value={doctor.doctor_id}>
-                    {doctor.doctor_id} - {doctor.doctorname}
+                {filteredDoctors.map(d => (
+                  <option key={d.doctor_id} value={d.doctor_id}>
+                    {d.doctor_id} — {d.doctorname}
                   </option>
                 ))}
               </select>
-              <button 
-                type="button" 
+              <button
+                type="button"
                 className="filter-button"
-                onClick={() => setShowDoctorFilter(!showDoctorFilter)}
+                onClick={() => setShowDoctorFilter(f => !f)}
               >
                 <FaFilter />
               </button>
             </div>
-            
             {showDoctorFilter && (
               <div className="filter-dropdown slide-down">
                 <div className="filter-input-group">
@@ -170,7 +154,7 @@ const AppointmentPage: React.FC = () => {
                     type="text"
                     placeholder="Filter doctors..."
                     value={doctorFilter}
-                    onChange={(e) => setDoctorFilter(e.target.value)}
+                    onChange={e => setDoctorFilter(e.target.value)}
                     className="filter-input"
                     autoFocus
                   />
@@ -184,32 +168,32 @@ const AppointmentPage: React.FC = () => {
           <label htmlFor="service-select" className="form-label">
             Select a Service:
           </label>
-          
           <div className="select-wrapper" ref={serviceFilterRef}>
             <div className="select-header">
               <select
                 id="service-select"
-                value={docvsServ.serv_id}
-                onChange={(e) => setSelectedService(e.target.value)}
+                value={selectedRequest.serviceId}
+                onChange={e =>
+                  setSelectedRequest(prev => ({ ...prev, serviceId: e.target.value }))
+                }
                 className="form-select"
                 required
               >
                 <option value="">Choose a service...</option>
-                {docvsServ.map(s => (
-                  <option key={} value={}>
-                    {} - {}
+                {filteredServices.map(s => (
+                  <option key={s.serv_id} value={s.serv_id}>
+                    {s.serv_id} — {s.servicename}
                   </option>
                 ))}
               </select>
-              <button 
-                type="button" 
+              <button
+                type="button"
                 className="filter-button"
-                onClick={() => setShowServiceFilter(!showServiceFilter)}
+                onClick={() => setShowServiceFilter(s => !s)}
               >
                 <FaFilter />
               </button>
             </div>
-            
             {showServiceFilter && (
               <div className="filter-dropdown slide-down">
                 <div className="filter-input-group">
@@ -218,7 +202,7 @@ const AppointmentPage: React.FC = () => {
                     type="text"
                     placeholder="Filter services..."
                     value={serviceFilter}
-                    onChange={(e) => setServiceFilter(e.target.value)}
+                    onChange={e => setServiceFilter(e.target.value)}
                     className="filter-input"
                     autoFocus
                   />
@@ -234,6 +218,8 @@ const AppointmentPage: React.FC = () => {
           </button>
         </div>
       </form>
+    </div>
+    <AnimatedTable/>
     </div>
   );
 };
