@@ -4,7 +4,7 @@ import { FaFilter, FaChevronDown, FaSearch } from 'react-icons/fa';
 import axios from 'axios';
 import './AppointmentPage.css';
 import { strict } from 'assert';
-import { toast } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 import { apiurl } from '../Apiurl';
 
 interface Doctor {
@@ -17,6 +17,10 @@ interface Service {
   id: string;
   name: string;
   category: string;
+}
+interface Requestpayload {
+    serviceId :string
+    doctor_id :string
 }
 interface Serv8DocReturn{
     doctor_id :string;
@@ -52,12 +56,14 @@ const AppointmentPage: React.FC = () => {
   const [selectedService, setSelectedService] = useState('');
   const [isMounted, setIsMounted] = useState(false);
 // mine
- const [docvsServ, setdocvsServ] = useState<Serv8DocReturn>({
-    serv_id:"",
-    servname:"",
-    doctor_id:"",
-    doctorname:""
+ const [docvsServ, setdocvsServ] = useState<Serv8DocReturn[]>([])
+ const [selectedRequest, setselectedRequest] = useState<Requestpayload>({
+    serviceId:"",
+    doctor_id:""
  })
+ const handleOnchangeEvent = (e:React.ChangeEvent<HTMLSelectElement>)=>{
+    const {}
+ }
  const handleDocsvServ = async()=>{
     try{
         const res = await axios.get(apiurl+"adim/DocVsServ")
@@ -65,6 +71,7 @@ const AppointmentPage: React.FC = () => {
             toast.error(res.data.message)
             return
         }
+        toast.success(res.data.message)
         setdocvsServ(res.data.data)
     }catch(err){
         toast.error("Error 500")
@@ -77,14 +84,12 @@ const AppointmentPage: React.FC = () => {
   const serviceFilterRef = useRef<HTMLDivElement>(null);
 
 
-  const filteredDoctors = doctors.filter(doctor => 
-    doctor.name.toLowerCase().includes(doctorFilter.toLowerCase()) ||
-    doctor.specialty.toLowerCase().includes(doctorFilter.toLowerCase())
+  const filteredDoctors = docvsServ.filter(doctor => 
+    doctor.doctorname.toLowerCase().includes(doctorFilter.toLowerCase())
   );
 
-  const filteredServices = services.filter(service => 
-    service.name.toLowerCase().includes(serviceFilter.toLowerCase()) ||
-    service.category.toLowerCase().includes(serviceFilter.toLowerCase())
+  const filteredServices = docvsServ.filter(service => 
+    service.servname.toLowerCase().includes(serviceFilter.toLowerCase()) 
   );
 
 
@@ -96,6 +101,7 @@ const AppointmentPage: React.FC = () => {
       if (serviceFilterRef.current && !serviceFilterRef.current.contains(event.target as Node)) {
         setShowServiceFilter(false);
       }
+      handleDocsvServ()
     };
 
     document.addEventListener('mousedown', handleClickOutside);
@@ -118,6 +124,7 @@ const AppointmentPage: React.FC = () => {
 
   return (
     <div className={`page-container ${isMounted ? 'mounted' : ''}`}>
+        <ToastContainer/>
       <div className="header">
         <h1 className="title">Medical Appointment</h1>
         <p className="subtitle">Select your doctor and service</p>
@@ -134,15 +141,15 @@ const AppointmentPage: React.FC = () => {
             <div className="select-header">
               <select
                 id="doctor-select"
-                value={selectedDoctor}
+                value={selectedRequest.doctor_id}
                 onChange={(e) => setSelectedDoctor(e.target.value)}
                 className="form-select"
                 required
               >
                 <option value="">Choose a doctor...</option>
                 {filteredDoctors.map(doctor => (
-                  <option key={doctor.id} value={doctor.name}>
-                    {doctor.name} - {doctor.specialty}
+                  <option key={doctor.doctor_id} value={doctor.doctor_id}>
+                    {doctor.doctor_id} - {doctor.doctorname}
                   </option>
                 ))}
               </select>
@@ -182,15 +189,15 @@ const AppointmentPage: React.FC = () => {
             <div className="select-header">
               <select
                 id="service-select"
-                value={selectedService}
+                value={docvsServ.serv_id}
                 onChange={(e) => setSelectedService(e.target.value)}
                 className="form-select"
                 required
               >
                 <option value="">Choose a service...</option>
-                {filteredServices.map(service => (
-                  <option key={service.id} value={service.name}>
-                    {service.name} - {service.category}
+                {docvsServ.map(s => (
+                  <option key={} value={}>
+                    {} - {}
                   </option>
                 ))}
               </select>
