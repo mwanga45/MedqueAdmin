@@ -1,7 +1,11 @@
 "use client"
 import React, { useState, useEffect, useRef } from 'react';
 import { FaFilter, FaChevronDown, FaSearch } from 'react-icons/fa';
+import axios from 'axios';
 import './AppointmentPage.css';
+import { strict } from 'assert';
+import { toast } from 'react-toastify';
+import { apiurl } from '../Apiurl';
 
 interface Doctor {
   id: string;
@@ -13,6 +17,12 @@ interface Service {
   id: string;
   name: string;
   category: string;
+}
+interface Serv8DocReturn{
+    doctor_id :string;
+    doctorname:string
+    serv_id:string;
+    servname:string
 }
 
 const AppointmentPage: React.FC = () => {
@@ -33,7 +43,7 @@ const AppointmentPage: React.FC = () => {
     { id: 's5', name: 'Dental Cleaning', category: 'Dentistry' },
   ];
 
-  // State management
+
   const [doctorFilter, setDoctorFilter] = useState('');
   const [serviceFilter, setServiceFilter] = useState('');
   const [showDoctorFilter, setShowDoctorFilter] = useState(false);
@@ -41,12 +51,32 @@ const AppointmentPage: React.FC = () => {
   const [selectedDoctor, setSelectedDoctor] = useState('');
   const [selectedService, setSelectedService] = useState('');
   const [isMounted, setIsMounted] = useState(false);
+// mine
+ const [docvsServ, setdocvsServ] = useState<Serv8DocReturn>({
+    serv_id:"",
+    servname:"",
+    doctor_id:"",
+    doctorname:""
+ })
+ const handleDocsvServ = async()=>{
+    try{
+        const res = await axios.get(apiurl+"adim/DocVsServ")
+        if (res.data.success ===false){
+            toast.error(res.data.message)
+            return
+        }
+        setdocvsServ(res.data.data)
+    }catch(err){
+        toast.error("Error 500")
+        console.error(err)
+    }
 
-  // Refs for detecting outside clicks
+ }
+  
   const doctorFilterRef = useRef<HTMLDivElement>(null);
   const serviceFilterRef = useRef<HTMLDivElement>(null);
 
-  // Filtered lists
+
   const filteredDoctors = doctors.filter(doctor => 
     doctor.name.toLowerCase().includes(doctorFilter.toLowerCase()) ||
     doctor.specialty.toLowerCase().includes(doctorFilter.toLowerCase())
@@ -57,7 +87,7 @@ const AppointmentPage: React.FC = () => {
     service.category.toLowerCase().includes(serviceFilter.toLowerCase())
   );
 
-  // Handle outside clicks
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (doctorFilterRef.current && !doctorFilterRef.current.contains(event.target as Node)) {
@@ -72,12 +102,11 @@ const AppointmentPage: React.FC = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  // Page entrance animation
+  
   useEffect(() => {
     setIsMounted(true);
   }, []);
 
-  // Form submission handler
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (selectedDoctor && selectedService) {
@@ -95,7 +124,7 @@ const AppointmentPage: React.FC = () => {
       </div>
 
       <form onSubmit={handleSubmit} className="appointment-form">
-        {/* Doctor Selection */}
+        
         <div className="form-group">
           <label htmlFor="doctor-select" className="form-label">
             Select a Doctor:
@@ -144,7 +173,6 @@ const AppointmentPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Service Selection */}
         <div className="form-group">
           <label htmlFor="service-select" className="form-label">
             Select a Service:
