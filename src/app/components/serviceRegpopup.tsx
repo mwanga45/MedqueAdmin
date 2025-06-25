@@ -18,12 +18,17 @@ interface Service {
 
 export default function ServicePopup() {
   const [isOpen, setIsOpen] = useState(false)
-  const [activeTab, setActiveTab] = useState<"list" | "register">("list")
+  const [activeTab, setActiveTab] = useState<"list" | "register" | "registerNonTime">("list")
   const [services, setServices] = useState<Service[]>([])
 
   const [formData, setFormData] = useState({
     servname: "",
     duration_time: 0,
+    fee: 0
+  })
+  const [nonTimeForm, setNonTimeForm] = useState({
+    servname: "",
+    initial_number: 0,
     fee: 0
   })
   const handlegetregisteredServ = async () => {
@@ -32,7 +37,7 @@ export default function ServicePopup() {
       if (res.data.success === false) {
         alert(res.data.message)
       }
-      setServices(res.data.data)
+      setServices(Array.isArray(res.data.data) ? res.data.data : [])
 
     } catch (err) {
       alert("Internal server Error")
@@ -41,7 +46,7 @@ export default function ServicePopup() {
   }
   useEffect(() => {
     handlegetregisteredServ()
-  },[])
+  }, [])
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -89,6 +94,51 @@ export default function ServicePopup() {
       console.error("Something went wrong", err);
     }
   };
+
+  const handleNonTimeInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    const isNumberField = name === "initial_number" || name === "fee";
+    setNonTimeForm((prev) => ({
+      ...prev,
+      [name]: isNumberField ? Number(value) : value,
+    }));
+  };
+
+  const handleNonTimeSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!nonTimeForm.servname.trim()) {
+      alert("Validation Error: Service name cannot be empty.");
+      return;
+    }
+    if (nonTimeForm.initial_number <= 0) {
+      alert("Validation Error: Initial number must be greater than zero.");
+      return;
+    }
+    if (nonTimeForm.fee <= 0) {
+      alert("Validation Error: Fee must be greater than zero.");
+      return;
+    }
+    try {
+      const res = await axios.post(apiurl +"adim/registerserv2", nonTimeForm);
+      if (res.data.success === false) {
+        alert(res.data.message || "Something went wrong during registration.");
+      } else if (res.data.success === true) {
+        alert(res.data.message || "Non-time service registered successfully!");
+        setNonTimeForm({
+          servname: "",
+          initial_number: 0,
+          fee: 0,
+        });
+        handlegetregisteredServ();
+        setActiveTab("list");
+      }
+    } catch (err: any) {
+      const errorMessage = err.response?.data?.message || err.message || "An unexpected error occurred.";
+      alert(`Error: ${errorMessage}`);
+      console.error("Something went wrong", err);
+    }
+  };
+
   return (
     <div className="app-container">
       <button className="open-popup-btn" onClick={() => setIsOpen(true)}>
@@ -118,20 +168,26 @@ export default function ServicePopup() {
               >
                 <FaPlus /> Register Service
               </button>
+              <button
+                className={`tab-btn ${activeTab === "registerNonTime" ? "active" : ""}`}
+                onClick={() => setActiveTab("registerNonTime")}
+              >
+                <FaPlus /> Register Non-Time Service
+              </button>
             </div>
 
             <div className="popup-content">
               {activeTab === "list" ? (
                 <div className="service-list">
-                  <h3>Existing Services ({services.length})</h3>
-                  {services.length === 0 ? (
+                  <h3>Existing Services ({Array.isArray(services) ? services.length : 0})</h3>
+                  {!Array.isArray(services) || services.length === 0 ? (
                     <div className="empty-state">
                       <FaServicestack size={48} />
                       <p>No services registered yet</p>
                     </div>
                   ) : (
                     <div className="services-grid">
-                      {services.map((service) => (
+                      {Array.isArray(services) && services.map((service) => (
                         <div key={service.id} className="service-card">
                           <div className="service-header">
                             <h4>{service.servicename}</h4>
@@ -154,7 +210,7 @@ export default function ServicePopup() {
                     </div>
                   )}
                 </div>
-              ) : (
+              ) : activeTab === "register" ? (
                 <div className="register-form">
                   <h3>Register New Service</h3>
                   <form onSubmit={handleSubmit}>
@@ -204,78 +260,68 @@ export default function ServicePopup() {
                         min="1"
                       />
                     </div>
-
-                    {/* <div className="form-row">
-                      <div className="form-group">
-                        <label htmlFor="email">
-                          <FaEnvelope /> Email
-                        </label>
-                        <input
-                          type="number"
-                          id="email"
-                          name="email"
-                          value={formData.fee}
-                          onChange={handleInputChange}
-                          placeholder="Enter email address"
-                          required
-                        />
-                      </div> */}
-
-                    {/* <div className="form-group">
-                        <label htmlFor="phone">
-                          <FaPhone /> Phone
-                        </label>
-                        <input
-                          type="tel"
-                          id="phone"
-                          name="phone"
-                          value={formData.phone}
-                          onChange={handleInputChange}
-                          placeholder="Enter phone number"
-                          required
-                        />
-                      </div>
-                    </div> */}
-                    {/* 
-                    <div className="form-group">
-                      <label htmlFor="category">
-                        <FaBuilding /> Category
-                      </label>
-                      <select
-                        id="category"
-                        name="category"
-                        value={formData.category}
-                        onChange={handleInputChange}
-                        required
-                      >
-                        <option value="">Select a category</option>
-                        {categories.map((category) => (
-                          <option key={category} value={category}>
-                            {category}
-                          </option>
-                        ))}
-                      </select>
-                    </div> */}
-
-                    {/* <div className="form-group">
-                      <label htmlFor="description">Description</label>
-                      <textarea
-                        id="description"
-                        name="description"
-                        value={formData.description}
-                        onChange={handleInputChange}
-                        placeholder="Enter service description"
-                        rows={4}
-                        required
-                      />
-                    </div> */}
-
                     <div className="form-actions">
                       <button type="button" className="cancel-btn" onClick={() => setActiveTab("list")}>
                         Cancel
                       </button>
                       <button type="submit" className="submit-btn">
                         <FaPlus /> Register Service
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              ) : (
+                <div className="register-form">
+                  <h3>Register New Non-Time Service</h3>
+                  <form onSubmit={handleNonTimeSubmit}>
+                    <div className="form-group">
+                      <label htmlFor="nt-servname">
+                        <FaServicestack /> Service Name
+                      </label>
+                      <input
+                        type="text"
+                        id="nt-servname"
+                        name="servname"
+                        value={nonTimeForm.servname}
+                        onChange={handleNonTimeInputChange}
+                        placeholder="Enter service name"
+                        required
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="nt-initial-number">
+                        <FaUser /> Initial Number
+                      </label>
+                      <input
+                        type="number"
+                        id="nt-initial-number"
+                        name="initial_number"
+                        value={nonTimeForm.initial_number}
+                        onChange={handleNonTimeInputChange}
+                        placeholder="Enter initial number"
+                        required
+                        min="1"
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="nt-fee">
+                        <FaUser /> Consultant Fee
+                      </label>
+                      <input
+                        type="number"
+                        id="nt-fee"
+                        name="fee"
+                        value={nonTimeForm.fee}
+                        onChange={handleNonTimeInputChange}
+                        placeholder="Enter consultant fee"
+                        required
+                        min="1"
+                      />
+                    </div>
+                    <div className="form-actions">
+                      <button type="button" className="cancel-btn" onClick={() => setActiveTab("list")}>Cancel</button>
+                      <button type="submit" className="submit-btn">
+                        <FaPlus /> Register Non-Time Service
                       </button>
                     </div>
                   </form>
