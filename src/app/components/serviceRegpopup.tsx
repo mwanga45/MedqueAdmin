@@ -44,32 +44,51 @@ export default function ServicePopup() {
   },[])
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    const { name, value } = e.target
+    const { name, value } = e.target;
+    const isNumberField = name === "duration_time" || name === "fee";
     setFormData((prev) => ({
       ...prev,
-      [name]: value,
-    }))
-  }
+      [name]: isNumberField ? Number(value) : value,
+    }));
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
+
+    if (!formData.servname.trim()) {
+      alert("Validation Error: Service name cannot be empty.");
+      return;
+    }
+    if (formData.duration_time <= 0) {
+      alert("Validation Error: Duration must be greater than zero.");
+      return;
+    }
+    if (formData.fee <= 0) {
+      alert("Validation Error: Fee must be greater than zero.");
+      return;
+    }
+
     try {
-      const res = await axios.post(apiurl + "adim/registerserv", formData)
-      if (res.data.success == false) {
-        alert(res.data.message || "Something went wrong")
-      } else if (res.data.success == true) {
-        alert(res.data.message && res.data.data)
+      const res = await axios.post(apiurl + "adim/registerserv", formData);
+
+      if (res.data.success === false) {
+        alert(res.data.message || "Something went wrong during registration.");
+      } else if (res.data.success === true) {
+        alert(res.data.message || "Service registered successfully!");
         setFormData({
           servname: "",
           duration_time: 0,
-          fee: 0
-        })
+          fee: 0,
+        });
+        handlegetregisteredServ();
+        setActiveTab("list");
       }
-    } catch (err) {
-      alert(err)
-      console.log("Something went wrong", err)
+    } catch (err: any) {
+      const errorMessage = err.response?.data?.message || err.message || "An unexpected error occurred.";
+      alert(`Error: ${errorMessage}`);
+      console.error("Something went wrong", err);
     }
-  }
+  };
   return (
     <div className="app-container">
       <button className="open-popup-btn" onClick={() => setIsOpen(true)}>
@@ -155,32 +174,34 @@ export default function ServicePopup() {
                     </div>
 
                     <div className="form-group">
-                      <label htmlFor="provider">
-                        <FaUser /> DurationTime
+                      <label htmlFor="duration_time">
+                        <FaUser /> Duration Time
                       </label>
                       <input
                         type="number"
-                        id="provider"
+                        id="duration_time"
                         name="duration_time"
                         value={formData.duration_time}
                         onChange={handleInputChange}
-                        placeholder="Enter time required"
+                        placeholder="Enter time required in minutes"
                         required
+                        min="1"
                       />
                     </div>
 
                     <div className="form-group">
-                      <label htmlFor="provider">
+                      <label htmlFor="fee">
                         <FaUser /> Consultant Fee
                       </label>
                       <input
-                        type='number'
-                        id="provider"
+                        type="number"
+                        id="fee"
                         name="fee"
                         value={formData.fee}
                         onChange={handleInputChange}
                         placeholder="Enter consultant fee"
                         required
+                        min="1"
                       />
                     </div>
 
