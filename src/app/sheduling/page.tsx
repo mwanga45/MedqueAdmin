@@ -10,10 +10,11 @@ import { apiurl } from "../Apiurl"
 
 interface Doctor {
   doctor_id: number
-  name: string
+  doctorname: string
   email: string
-  specialist: string
+  specialist_name: string
   phone: string
+  assgn_status: boolean
 }
 
 interface Specialist {
@@ -37,6 +38,8 @@ export default function DoctorManagement() {
   const [showDoctorPopup, setShowDoctorPopup] = useState(false)
   const [showSpecialistPopup, setShowSpecialistPopup] = useState(false)
   const [specialists, setspecialists] = useState<Specialist[]>([])
+  const [doctors, setDoctors] = useState<Doctor[]>([])
+  const [loading, setLoading] = useState(false)
 
   const [scheduleForm, setScheduleForm] = useState<ScheduleForm>({
     doctor_id: "",
@@ -50,45 +53,12 @@ export default function DoctorManagement() {
     description: "",
   })
 
-  const doctors: Doctor[] = [
-    {
-      doctor_id: 1,
-      name: "Dr. Sarah Johnson",
-      email: "sarah.johnson@hospital.com",
-      specialist: "Cardiology",
-      phone: "+1-555-0123",
-    },
-    {
-      doctor_id: 2,
-      name: "Dr. Michael Chen",
-      email: "michael.chen@hospital.com",
-      specialist: "Neurology",
-      phone: "+1-555-0124",
-    },
-    {
-      doctor_id: 3,
-      name: "Dr. Emily Rodriguez",
-      email: "emily.rodriguez@hospital.com",
-      specialist: "Pediatrics",
-      phone: "+1-555-0125",
-    },
-    {
-      doctor_id: 4,
-      name: "Dr. James Wilson",
-      email: "james.wilson@hospital.com",
-      specialist: "Orthopedics",
-      phone: "+1-555-0126",
-    },
-  ]
-
-
-
   const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
 
   const handleScheduleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     try {
-      const res = await axios.post(apiurl + "adim/docshedule",scheduleForm)
+      const res = await axios.post(apiurl + "admin/docshedule", scheduleForm)
       if (res.data.success === false) {
         toast.error(res.data.message)
         return
@@ -106,14 +76,25 @@ export default function DoctorManagement() {
       return
     }
   }
-  const handlegetdoctInfo = async()=>{
-    try{
-      
-    }catch(err){
+
+  const handlegetdoctInfo = async () => {
+    setLoading(true)
+    try {
+      const res = await axios.get(apiurl + "adim/getDocInfo")
+      if (res.data.success) {
+        setDoctors(res.data.data)
+        toast.success("Doctor information loaded successfully!")
+      } else {
+        toast.error(res.data.message || "Failed to load doctor information")
+      }
+    } catch (err) {
+      console.error("Error fetching doctor info:", err)
       toast.error("Internal server error")
-      console.error(err)
+    } finally {
+      setLoading(false)
     }
   }
+
   const handlefetchexistspecilist = async () => {
     try {
 
@@ -128,6 +109,7 @@ export default function DoctorManagement() {
       console.log("Something went wrong ", err)
     }
   }
+
   const handleSpecialistSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     try {
@@ -142,19 +124,22 @@ export default function DoctorManagement() {
         specialist: "",
         description: "",
       })
+      // Refresh specialists list
+      handlefetchexistspecilist()
     } catch (err) {
       console.error("something went wrong", err)
       toast.error("Internal Error status Error 500")
     }
-
   }
 
   const selectDoctor = (doctorId: number) => {
     setScheduleForm((prev) => ({ ...prev, doctor_id: doctorId.toString() }))
     setShowDoctorPopup(false)
   }
+
   useEffect(() => {
     handlefetchexistspecilist()
+    handlegetdoctInfo() // Load doctor information on component mount
   }, [])
 
   return (
@@ -169,9 +154,14 @@ export default function DoctorManagement() {
         <section className="section">
           <h2>Doctor Schedule Registration</h2>
 
-          <button className="btn btn-primary" onClick={() => setShowDoctorPopup(true)}>
-            View All Doctors
-          </button>
+          <div style={{ display: 'flex', gap: '10px', marginBottom: '20px' }}>
+            <button className="btn btn-primary" onClick={() => setShowDoctorPopup(true)}>
+              View All Doctors
+            </button>
+            <button className="btn btn-secondary" onClick={handlegetdoctInfo} disabled={loading}>
+              {loading ? 'Loading...' : 'Refresh Doctors'}
+            </button>
+          </div>
 
           <form className="form" onSubmit={handleScheduleSubmit}>
             <div className="form-group">
@@ -281,23 +271,39 @@ export default function DoctorManagement() {
             </div>
             <div className="popup-body">
               <div className="doctor-list">
-                {doctors.map((doctor) => (
-                  <div key={doctor.doctor_id} className="doctor-card" onClick={() => selectDoctor(doctor.doctor_id)}>
-                    <h4>{doctor.name}</h4>
-                    <p>
-                      <strong>ID:</strong> {doctor.doctor_id}
-                    </p>
-                    <p>
-                      <strong>Email:</strong> {doctor.email}
-                    </p>
-                    <p>
-                      <strong>Specialist:</strong> {doctor.specialist}
-                    </p>
-                    <p>
-                      <strong>Phone:</strong> {doctor.phone}
-                    </p>
+                {doctors.length === 0 ? (
+                  <div style={{ textAlign: 'center', padding: '20px' }}>
+                    {loading ? 'Loading doctors...' : 'No doctors found'}
                   </div>
-                ))}
+                ) : (
+                  doctors.map((doctor) => (
+                    <div key={doctor.doctor_id} className="doctor-card" onClick={() => selectDoctor(doctor.doctor_id)}>
+                      <h4>{doctor.doctorname}</h4>
+                      <p>
+                        <strong>ID:</strong> {doctor.doctor_id}
+                      </p>
+                      <p>
+                        <strong>Email:</strong> {doctor.email}
+                      </p>
+                      <p>
+                        <strong>Specialist:</strong> {doctor.specialist_name}
+                      </p>
+                      <p>
+                        <strong>Phone:</strong> {doctor.phone}
+                      </p>
+                      <p>
+                        <strong>Status:</strong> 
+                        <span style={{ 
+                          color: doctor.assgn_status ? '#28a745' : '#dc3545',
+                          fontWeight: 'bold',
+                          marginLeft: '5px'
+                        }}>
+                          {doctor.assgn_status ? 'Assigned' : 'Unassigned'}
+                        </span>
+                      </p>
+                    </div>
+                  ))
+                )}
               </div>
             </div>
           </div>
