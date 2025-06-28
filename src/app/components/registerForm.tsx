@@ -32,10 +32,7 @@ export default function Register({ changeToLogin, }: changeToLogin) {
         event.preventDefault()
         changeToLogin()
     }
-    const [specInfo, setspecInfo] = useState<Specialist[]>([{
-        specialist: "",
-        Description: ""
-    }])
+    const [specInfo, setspecInfo] = useState<Specialist[]>([])
     const [formData, setFormData] = useState<Staff>(
         {
             username: "",
@@ -88,17 +85,18 @@ export default function Register({ changeToLogin, }: changeToLogin) {
                 toast.error(res.data.message)
                 return
             }
-            setspecInfo(res.data.data)
-            alert("Press button login  login")
+            setspecInfo(res.data.data || [])
+            console.log(res.data.data)
         } catch (err) {
-            console.error("Something went wrong")
+            console.error("Something went wrong", err)
             toast.error("Internal serverError  status:500")
-            return
+            setspecInfo([]) 
         }
     }
     useEffect(() => {
         handlefetch()
     }, [])
+    
     return (
         <div className="reg-container">
             <ToastContainer />
@@ -140,7 +138,7 @@ export default function Register({ changeToLogin, }: changeToLogin) {
                         }}
                     >
                         <option value="">Select specialist</option>
-                        {specInfo.map((s) => (
+                        {Array.isArray(specInfo) && specInfo.map((s) => (
                             <option key={s.specialist} value={s.specialist}>
                                 {s.specialist}
                             </option>

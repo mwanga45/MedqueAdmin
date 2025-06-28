@@ -85,15 +85,14 @@ export default function Login({ changeToRegister }: LoginProps) {
                     password: formData.password
                 });
             } else {
-                // Admin login request - you can create a separate admin endpoint
-                response = await axios.post(`${apiurl}admin/login`, {
+                
+                response = await axios.post(`${apiurl}adim/login`, {
                     username: formData.username,
                     password: formData.password
                 });
             }
 
             if (response.data.success) {
-                // Store token in localStorage
                 if (response.data.data && response.data.data.token) {
                     localStorage.setItem('token', response.data.data.token);
                     localStorage.setItem('userType', userType);
@@ -102,7 +101,7 @@ export default function Login({ changeToRegister }: LoginProps) {
                 
                 toast.success(response.data.message || 'Login successful!');
                 
-                // Route based on user type
+               
                 if (userType === 'admin') {
                     router.push("/dashboard");
                 } else {

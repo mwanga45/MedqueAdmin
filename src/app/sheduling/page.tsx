@@ -50,7 +50,6 @@ export default function DoctorManagement() {
     description: "",
   })
 
-  // Mock data
   const doctors: Doctor[] = [
     {
       doctor_id: 1,
@@ -107,6 +106,14 @@ export default function DoctorManagement() {
       return
     }
   }
+  const handlegetdoctInfo = async()=>{
+    try{
+      
+    }catch(err){
+      toast.error("Internal server error")
+      console.error(err)
+    }
+  }
   const handlefetchexistspecilist = async () => {
     try {
 
@@ -158,7 +165,7 @@ export default function DoctorManagement() {
       </header>
 
       <div className="main-content">
-        {/* Doctor Schedule Registration Section */}
+ 
         <section className="section">
           <h2>Doctor Schedule Registration</h2>
 
