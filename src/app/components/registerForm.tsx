@@ -119,13 +119,25 @@ export default function Register({ changeToLogin, }: changeToLogin) {
                     <input type="text" name="regNo" id="RegNumber" placeholder="Enter your Registration number please" value={formData.regNo} onChange={handleonchangeEvent} />
                 </div>
                 <div className="reg-inputConatiner">
+                    <label htmlFor="category">Specialist</label>
                     <select
                         id="category"
                         name="specialist"
                         value={formData.specialist}
                         onChange={handleonchangeEvent}
                         required
-                        className="reg-inputConatiner"
+                        style={{
+                            outline: 'none',
+                            backgroundColor: '#edffff',
+                            borderRadius: '5px',
+                            height: '5svh',
+                            width: '35svh',
+                            paddingLeft: '5px',
+                            boxShadow: 'rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px',
+                            border: 'none',
+                            fontFamily: "'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif",
+                            fontSize: '14px'
+                        }}
                     >
                         <option value="">Select specialist</option>
                         {specInfo.map((s) => (

@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 
-// Sample data type
 type TableData = {
   id: number
   sn: number
@@ -14,7 +13,7 @@ type TableData = {
   status: "active" | "inactive" | "pending"
 }
 
-// Sample data
+
 const initialData: TableData[] = [
   {
     id: 1,

@@ -14,8 +14,6 @@ interface Service {
 
 }
 
-
-
 export default function ServicePopup() {
   const [isOpen, setIsOpen] = useState(false)
   const [activeTab, setActiveTab] = useState<"list" | "register" | "registerNonTime">("list")
@@ -119,11 +117,14 @@ export default function ServicePopup() {
       return;
     }
     try {
-      const res = await axios.post(apiurl +"adim/registerserv2", nonTimeForm);
+      const res = await axios.post(apiurl +"adim/regiNonIntervalserv", nonTimeForm);
+      console.log(nonTimeForm)
       if (res.data.success === false) {
         alert(res.data.message || "Something went wrong during registration.");
+        console.log(res.data.message)
       } else if (res.data.success === true) {
         alert(res.data.message || "Non-time service registered successfully!");
+        console.log(res.data.message)
         setNonTimeForm({
           servname: "",
           initial_number: 0,
