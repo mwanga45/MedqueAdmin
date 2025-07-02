@@ -58,7 +58,7 @@ export default function DoctorManagement() {
   const handleScheduleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     try {
-      const res = await axios.post(apiurl + "admin/docshedule", scheduleForm)
+      const res = await axios.post(apiurl + "adim/docshedule", scheduleForm)
       if (res.data.success === false) {
         toast.error(res.data.message)
         return
@@ -83,7 +83,6 @@ export default function DoctorManagement() {
       const res = await axios.get(apiurl + "adim/getDocInfo")
       if (res.data.success) {
         setDoctors(res.data.data)
-        toast.success("Doctor information loaded successfully!")
       } else {
         toast.error(res.data.message || "Failed to load doctor information")
       }

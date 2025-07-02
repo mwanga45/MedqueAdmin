@@ -31,7 +31,7 @@ export default function ServicePopup() {
   })
   const handlegetregisteredServ = async () => {
     try {
-      const res = await axios.get(apiurl + "booking/getservice")
+      const res = await axios.get(apiurl+"adim/getregserv")
       if (res.data.success === false) {
         alert(res.data.message)
       }
@@ -39,6 +39,7 @@ export default function ServicePopup() {
 
     } catch (err) {
       alert("Internal server Error")
+      alert("Failed to fetch services")
       console.error("something went wrong", err)
     }
   }

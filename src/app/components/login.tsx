@@ -79,7 +79,7 @@ export default function Login({ changeToRegister }: LoginProps) {
             
             if (userType === 'doctor') {
                 // Doctor login request
-                response = await axios.post(`${apiurl}dkt/login`, {
+                response = await axios.post(`${apiurl}auth/dklogin`, {
                     username: formData.username,
                     regNo: formData.registrationNumber,
                     password: formData.password
@@ -105,7 +105,7 @@ export default function Login({ changeToRegister }: LoginProps) {
                 if (userType === 'admin') {
                     router.push("/dashboard");
                 } else {
-                    router.push("/doctor-dashboard");
+                    router.push("/dashboard");
                 }
             } else {
                 setError(response.data.message || 'Login failed');
