@@ -9,9 +9,13 @@ import { IoNotifications } from "react-icons/io5";
 import { FaCodeMerge } from "react-icons/fa6";
 import { GrSchedules } from "react-icons/gr";
 import { FaUserEdit } from "react-icons/fa";
+import { useRouter } from "next/navigation";
 import ServicePopup from "../components/serviceRegpopup"
 
-export default function Sidebar({onClickstaff}) {
+
+export default function Sidebar() {
+  const router = useRouter();
+
 
   return (
     <div  className='nav-container'>
@@ -23,27 +27,33 @@ export default function Sidebar({onClickstaff}) {
           <input type='text' name='search' placeholder='search'/>
           <FaSearch/>
         </div>
-        <div className="navlink-container">
+        <div className="navlink-container" onClick={()=>{
+          router.push("/dashboard")
+        }}>
           <ul>
             <li>Dashboard</li>
             <li><MdDashboard/></li>
           </ul>
         </div>
-        <div className="navlink-container" onClick={onClickstaff} >
+        <div className="navlink-container" >
           <ul>
             <li>Staff Registration</li>
             <li><FaUserEdit /></li>
           </ul>
         </div>
-        <div className="navlink-container">
+        <div className="navlink-container" onClick={()=>{
+          router.push("/sheduling")
+        }}>
           <ul>
-            <li>Emergence</li>
+            <li>Scheduling</li>
             <li>< FaCodeMerge/></li>
           </ul>
         </div>
-        <div className="navlink-container">
+        <div className="navlink-container" onClick={()=>{
+          router.push("/service-registration")
+        }}>
           <ul>
-            <li>Sheduling</li>
+            <li>Service Registration</li>
             <li><GrSchedules/></li>
           </ul>
         </div>

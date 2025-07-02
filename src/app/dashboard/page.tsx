@@ -7,6 +7,7 @@ import { FaSearch } from "react-icons/fa";
 import Sidebar from "../components/sidebar";
 import { BiHealth } from "react-icons/bi";
 import ServicePopup from "../components/serviceRegpopup"
+
 export default function Dashboard() {
   const  [isstaffOpen, setisstaffopen] = useState(false)
   const handleisopen = ()=>{
@@ -15,7 +16,7 @@ export default function Dashboard() {
   return (
     <div className="dash-container">
       <div className="dash-sidebar">
-        <Sidebar onClickstaff={handleisopen} />
+        {/* <Sidebar/> */}
       </div>
       <div className="dash-upperboard">
         <div className="unv-title">
@@ -28,9 +29,9 @@ export default function Dashboard() {
           <p className="page-title">DashBoard</p>
         </div>
         <div className="optional-dashcontainer">
-          <div className="optional-dash">
-            <p>Booking</p>
-          </div>
+          <button className="optional-dash" onClick={handleisopen}>
+            <p>Register</p>
+          </button>
           <div className="optional-dash">
             <p>Nurse</p>
           </div>

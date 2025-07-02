@@ -38,7 +38,7 @@
 /* Navigation bar  style */
 .nav-container{
     padding: 12px;
-
+    background: #434343;
 }
 .nav-upper{
     display: flex;
@@ -75,6 +75,34 @@
     margin-top: 12px;
     margin-bottom: 22px;
     cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.2s, box-shadow 0.2s, transform 0.2s;
+}
+.navlink-container:hover {
+    background: #222c36;
+    box-shadow: 0 4px 16px 0 rgba(0,0,0,0.12);
+    transform: scale(1.04);
+}
+.navlink-container:active::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 200%;
+    height: 200%;
+    background: rgba(255,255,255,0.08);
+    border-radius: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    animation: ripple 0.5s linear;
+    pointer-events: none;
+    z-index: 1;
+}
+@keyframes ripple {
+    to {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 0;
+    }
 }
 .navlink-container ul{
     display: flex;
@@ -164,4 +192,11 @@
 .Upper-searchbar input{
     color:#101011;
     outline: none;
+}
+.navlink-container ul li svg {
+    transition: color 0.2s, transform 0.2s;
+}
+.navlink-container:hover ul li svg {
+    color: #4fd1c5;
+    transform: scale(1.2);
 }
