@@ -80,7 +80,7 @@ export default function Register({ changeToLogin, }: changeToLogin) {
     }
     const handlefetch = async () => {
         try {
-            const res = await axios.get(apiurl + "adim/getspecInfo")
+            const res = await axios.get(apiurl + "admin/getspecInfo")
             if (res.data.success === false) {
                 toast.error(res.data.message)
                 return

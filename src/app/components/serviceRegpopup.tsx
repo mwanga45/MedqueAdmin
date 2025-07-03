@@ -31,7 +31,7 @@ export default function ServicePopup() {
   })
   const handlegetregisteredServ = async () => {
     try {
-      const res = await axios.get(apiurl+"adim/getregserv")
+      const res = await axios.get(apiurl+"admin/getregserv")
       if (res.data.success === false) {
         alert(res.data.message)
       }
@@ -73,7 +73,7 @@ export default function ServicePopup() {
     }
 
     try {
-      const res = await axios.post(apiurl + "adim/registerserv", formData);
+      const res = await axios.post(apiurl + "admin/registerserv", formData);
 
       if (res.data.success === false) {
         alert(res.data.message || "Something went wrong during registration.");
@@ -118,7 +118,7 @@ export default function ServicePopup() {
       return;
     }
     try {
-      const res = await axios.post(apiurl +"adim/regiNonIntervalserv", nonTimeForm);
+      const res = await axios.post(apiurl +"admin/regiNonIntervalserv", nonTimeForm);
       console.log(nonTimeForm)
       if (res.data.success === false) {
         alert(res.data.message || "Something went wrong during registration.");

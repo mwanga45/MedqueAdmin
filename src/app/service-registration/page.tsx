@@ -44,7 +44,7 @@ const AppointmentPage: React.FC = () => {
 
   const fetchLists = async () => {
     try {
-      const res = await axios.get(apiurl + "adim/DocVsServ");
+      const res = await axios.get(apiurl + "admin/DocVsServ");
       if (!res.data.success) {
         toast.error(res.data.message);
         return;

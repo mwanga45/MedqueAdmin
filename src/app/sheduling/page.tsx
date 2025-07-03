@@ -59,7 +59,7 @@ export default function DoctorManagement() {
   const handleScheduleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     try {
-      const res = await axios.post(apiurl + "adim/docshedule", scheduleForm)
+      const res = await axios.post(apiurl + "admin/docshedule", scheduleForm)
       if (res.data.success === false) {
         toast.error(res.data.message)
         return
@@ -81,7 +81,7 @@ export default function DoctorManagement() {
   const handlegetdoctInfo = async () => {
     setLoading(true)
     try {
-      const res = await axios.get(apiurl + "adim/getDocInfo")
+      const res = await axios.get(apiurl + "admin/getDocInfo")
       if (res.data.success) {
         setDoctors(res.data.data)
       } else {
@@ -98,7 +98,7 @@ export default function DoctorManagement() {
   const handlefetchexistspecilist = async () => {
     try {
 
-      const res = await axios.get(apiurl + "adim/getspecInfo")
+      const res = await axios.get(apiurl + "admin/getspecInfo")
       if (res.data.success === false) {
         toast.error(res.data.message)
         return
@@ -113,7 +113,7 @@ export default function DoctorManagement() {
   const handleSpecialistSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     try {
-      const res = await axios.post(apiurl + "adim/regspecilist", specialistForm)
+      const res = await axios.post(apiurl + "admin/regspecialist", specialistForm)
 
       if (res.data.success === false) {
         toast.error(res.data.message)

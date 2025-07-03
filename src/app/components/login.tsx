@@ -86,7 +86,7 @@ export default function Login({ changeToRegister }: LoginProps) {
                 });
             } else {
                 
-                response = await axios.post(`${apiurl}adim/login`, {
+                response = await axios.post(`${apiurl}admin/login`, {
                     username: formData.username,
                     password: formData.password
                 });
