@@ -5,8 +5,8 @@ import { FaFilter, FaSearch } from 'react-icons/fa';
 import axios from 'axios';
 import './AppointmentPage.css';
 import { toast, ToastContainer } from 'react-toastify';
-import { apiurl } from '../Apiurl';
-import AnimatedTable from '../components/table';
+import { apiurl } from '../../Apiurl';
+import AnimatedTable from '../../components/table';
 
 interface DoctorInfo {
   doctor_id: number;

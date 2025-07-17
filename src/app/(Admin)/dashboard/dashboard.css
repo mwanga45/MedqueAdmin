@@ -107,6 +107,43 @@
     border-radius: 50%;
     box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
 }
+.navlink-container.navlink-active {
+    background-color: #22223b;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.navlink-container.navlink-active ul li {
+    color: #f2e9e4;
+    font-weight: bold;
+}
+.navlink-container:hover {
+    background-color: #393960;
+    border-radius: 8px;
+    transition: background 0.2s;
+}
+.navlink-container.navlink-disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+    pointer-events: none;
+}
+.navlink-container ul {
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: row;
+    align-items: center;
+    column-gap: 12px;
+    padding: 8px 0;
+    width: 100%;
+}
+.navlink-container ul li:last-child {
+    font-size: 1.3em;
+    display: flex;
+    align-items: center;
+}
+.navlink-container {
+    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+    margin-bottom: 8px;
+}
 /* style for the apper board */
 
 .page-title{

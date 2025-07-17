@@ -6,7 +6,7 @@ import { useState, useEffect } from "react"
 import { ToastContainer, toast } from 'react-toastify';
 import "./sheduling.css"
 
-import { apiurl } from "../Apiurl"
+import { apiurl } from "../../Apiurl"
 
 
 interface Doctor {

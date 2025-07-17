@@ -60,7 +60,6 @@ export default function Login({ changeToRegister }: LoginProps) {
         setIsLoading(true);
         setError('');
 
-        // Basic validation
         if (!formData.username || !formData.password) {
             setError('Please fill in all required fields');
             setIsLoading(false);
@@ -78,7 +77,7 @@ export default function Login({ changeToRegister }: LoginProps) {
             let response;
             
             if (userType === 'doctor') {
-                // Doctor login request
+  
                 response = await axios.post(`${apiurl}auth/dklogin`, {
                     username: formData.username,
                     regNo: formData.registrationNumber,

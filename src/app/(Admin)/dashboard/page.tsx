@@ -1,12 +1,12 @@
 "use client";
 import React, { useState } from "react";
-import MainTb from "../components/animate-table";
-import AnimatedTable from "../components/table";
+import MainTb from "../../components/animate-table";
+import AnimatedTable from "../../components/table";
 import "./dashboard.css";
 import { FaSearch } from "react-icons/fa";
-import Sidebar from "../components/sidebar";
+import Sidebar from "../../components/sidebar";
 import { BiHealth } from "react-icons/bi";
-import ServicePopup from "../components/serviceRegpopup"
+import ServicePopup from "../../components/serviceRegpopup"
 
 export default function Dashboard() {
   const  [isstaffOpen, setisstaffopen] = useState(false)
