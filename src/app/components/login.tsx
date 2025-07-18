@@ -114,7 +114,7 @@ export default function Login({ changeToRegister }: LoginProps) {
             console.error('Login error:', err);
             
             if (err.response) {
-                // Server responded with error status
+
                 const errorMessage = err.response.data?.message || 'Login failed';
                 setError(errorMessage);
                 toast.error(errorMessage);
@@ -139,7 +139,7 @@ export default function Login({ changeToRegister }: LoginProps) {
                 <p>{userType === 'admin' ? 'Admin Login' : 'Doctor Login'}</p>
             </div>
 
-            {/* User Type Selection */}
+
             <div className="user-type-selector" style={{ 
                 marginBottom: '20px',
                 display: 'flex',
