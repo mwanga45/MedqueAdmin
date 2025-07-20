@@ -92,7 +92,7 @@ const AppointmentPage: React.FC = () => {
   const handleSubmit = async(e: React.FormEvent) => {
     e.preventDefault();
        try{
-        const res = await axios.post(apiurl+"adim/docAsgnServ",selectedRequest)
+        const res = await axios.post(apiurl+"admin/docAsgnServ",selectedRequest)
          if (res.data.success ===false){
           toast.error(res.data.message)
           return

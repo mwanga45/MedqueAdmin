@@ -58,10 +58,37 @@ export default function DoctorManagement() {
 
   const handleScheduleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+
+
+    if (!scheduleForm.doctor_id.trim()) {
+      toast.error("Doctor ID is required.");
+      return;
+    }
+    if (!scheduleForm.day_of_week.trim()) {
+      toast.error("Day of Week is required.");
+      return;
+    }
+    if (!scheduleForm.start_time.trim()) {
+      toast.error("Start Time is required.");
+      return;
+    }
+    if (!scheduleForm.end_time.trim()) {
+      toast.error("End Time is required.");
+      return;
+    }
+    if (
+      isNaN(Number(scheduleForm.doctor_id)) ||
+      isNaN(Number(scheduleForm.day_of_week))
+    ) {
+      toast.error("Doctor ID and Day of Week must be valid numbers.");
+      return;
+    }
+
     try {
-      const res = await axios.post(apiurl + "admin/docshedule", scheduleForm)
+      const res = await axios.post(apiurl+"admin/docschedule", scheduleForm)
       if (res.data.success === false) {
         toast.error(res.data.message)
+        console.log(scheduleForm)
         return
       }
       toast.success("Schedule registered successfully!")
@@ -71,10 +98,20 @@ export default function DoctorManagement() {
         start_time: "",
         end_time: "",
       })
-    } catch (err) {
+    } catch (err: any) {
       console.error(err)
-      toast.error("Something went wrong")
-      return
+      // Show backend error message if available (check both Message and message)
+      if (err.response && err.response.data) {
+        const msg = err.response.data.Message || err.response.data.message;
+        if (msg) {
+          toast.error(msg);
+        } else {
+          toast.error("Something went wrong");
+        }
+      } else {
+        toast.error("Something went wrong");
+      }
+      return;
     }
   }
 
