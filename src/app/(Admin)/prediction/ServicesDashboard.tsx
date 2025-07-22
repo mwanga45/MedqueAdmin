@@ -1,135 +1,64 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import axios from "axios"
+import { apiurl } from "../../Apiurl";
+
+interface ServiceDayPrediction {
+  service_id: number;
+  service_name: string;
+  day_of_week: number;
+  day_name: string;
+  predicted: number;
+  actual: number;
+}
 
 export default function ServicesDashboard() {
+  const [data, setData] = useState<ServiceDayPrediction[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState("")
   const [currentSlide, setCurrentSlide] = useState(0)
-  const [animatedPercentages, setAnimatedPercentages] = useState<number[]>([])
-
-  const services = [
-    {
-      id: 1,
-      name: "Emergency Care",
-      percentage: 85,
-      description: "24/7 emergency medical services",
-      expectedDaily: 45,
-      todayCount: 38,
-      dayName: "Monday",
-      color: "#e74c3c",
-    },
-    {
-      id: 2,
-      name: "General Consultation",
-      percentage: 92,
-      description: "General health checkups and consultations",
-      expectedDaily: 120,
-      todayCount: 110,
-      dayName: "Monday",
-      color: "#27ae60",
-    },
-    {
-      id: 3,
-      name: "Pediatrics",
-      percentage: 78,
-      description: "Specialized care for children",
-      expectedDaily: 35,
-      todayCount: 27,
-      dayName: "Monday",
-      color: "#3498db",
-    },
-    {
-      id: 4,
-      name: "Cardiology",
-      percentage: 88,
-      description: "Heart and cardiovascular care",
-      expectedDaily: 25,
-      todayCount: 22,
-      dayName: "Monday",
-      color: "#9b59b6",
-    },
-    {
-      id: 5,
-      name: "Orthopedics",
-      percentage: 73,
-      description: "Bone and joint treatment",
-      expectedDaily: 30,
-      todayCount: 22,
-      dayName: "Monday",
-      color: "#f39c12",
-    },
-    {
-      id: 6,
-      name: "Radiology",
-      percentage: 95,
-      description: "Medical imaging services",
-      expectedDaily: 60,
-      todayCount: 57,
-      dayName: "Monday",
-      color: "#1abc9c",
-    },
-  ]
+  const [serviceFilter, setServiceFilter] = useState("");
+  const [minPredicted, setMinPredicted] = useState(0);
 
   useEffect(() => {
-    // Animate percentages on mount
-    const timer = setTimeout(() => {
-      setAnimatedPercentages(services.map((service) => service.percentage))
-    }, 500)
-    return () => clearTimeout(timer)
+    const fetchPrediction = async () => {
+      try {
+        const res = await axios.get(apiurl+"admin/prediction")
+        if (res.data.success) {
+          setData(res.data.data)
+        } else {
+          setError(res.data.message || "Failed to fetch prediction data")
+        }
+      } catch (err: any) {
+        setError(err.response?.data?.message || err.message || "Error fetching prediction data")
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchPrediction()
   }, [])
 
-  const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % Math.ceil(services.length / 3))
-  }
+  if (loading) return <div>Loading prediction data...</div>
+  if (error) return <div style={{ color: 'red' }}>{error}</div>
 
-  const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + Math.ceil(services.length / 3)) % Math.ceil(services.length / 3))
-  }
+  // Group by service, with filters
+  const grouped = data.reduce((acc, item) => {
+    if (
+      (!serviceFilter || item.service_name.toLowerCase().includes(serviceFilter.toLowerCase())) &&
+      item.predicted >= minPredicted
+    ) {
+      if (!acc[item.service_name]) acc[item.service_name] = [];
+      acc[item.service_name].push(item);
+    }
+    return acc;
+  }, {} as Record<string, ServiceDayPrediction[]>);
 
-  const CircularProgress = ({
-    percentage,
-    size = 120,
-    color = "#3498db",
-  }: { percentage: number; size?: number; color?: string }) => {
-    const radius = (size - 8) / 2
-    const circumference = 2 * Math.PI * radius
-    const strokeDashoffset = circumference - (percentage / 100) * circumference
+  const serviceNames = Object.keys(grouped);
+  const slides = Math.ceil(serviceNames.length / 3);
 
-    return (
-      <div style={{ position: "relative", width: size, height: size }}>
-        <svg width={size} height={size} style={{ transform: "rotate(-90deg)" }}>
-          <circle cx={size / 2} cy={size / 2} r={radius} stroke="#f0f0f0" strokeWidth="8" fill="transparent" />
-          <circle
-            cx={size / 2}
-            cy={size / 2}
-            r={radius}
-            stroke={color}
-            strokeWidth="8"
-            fill="transparent"
-            strokeDasharray={circumference}
-            strokeDashoffset={strokeDashoffset}
-            strokeLinecap="round"
-            style={{
-              transition: "stroke-dashoffset 2s ease-in-out",
-              filter: "drop-shadow(0 0 6px rgba(52, 152, 219, 0.3))",
-            }}
-          />
-        </svg>
-        <div
-          style={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            fontSize: size > 60 ? "18px" : "12px",
-            fontWeight: "bold",
-            color: "#2c3e50",
-          }}
-        >
-          {percentage}%
-        </div>
-      </div>
-    )
-  }
+  const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % slides)
+  const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + slides) % slides)
 
   return (
     <div
@@ -140,7 +69,7 @@ export default function ServicesDashboard() {
         fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
       }}
     >
-      {/* Header */}
+
       <header
         style={{
           padding: "30px 20px",
@@ -213,7 +142,7 @@ export default function ServicesDashboard() {
               transition: "transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)",
             }}
           >
-            {Array.from({ length: Math.ceil(services.length / 3) }).map((_, slideIndex) => (
+            {Array.from({ length: slides }).map((_, slideIndex) => (
               <div
                 key={slideIndex}
                 style={{
@@ -225,68 +154,77 @@ export default function ServicesDashboard() {
                   padding: "20px",
                 }}
               >
-                {services.slice(slideIndex * 3, (slideIndex + 1) * 3).map((service, index) => (
-                  <div
-                    key={service.id}
-                    style={{
-                      background: "linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%)",
-                      border: `3px solid ${service.color}`,
-                      borderRadius: "20px",
-                      padding: "35px",
-                      textAlign: "center",
-                      minWidth: "300px",
-                      boxShadow: `0 8px 25px rgba(0, 0, 0, 0.1), 0 0 0 1px ${service.color}20`,
-                      transition: "all 0.3s ease",
-                      cursor: "pointer",
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.transform = "translateY(-10px)"
-                      e.currentTarget.style.boxShadow = `0 15px 35px rgba(0, 0, 0, 0.15), 0 0 0 1px ${service.color}40`
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.transform = "translateY(0)"
-                      e.currentTarget.style.boxShadow = `0 8px 25px rgba(0, 0, 0, 0.1), 0 0 0 1px ${service.color}20`
-                    }}
-                  >
-                    <CircularProgress
-                      percentage={animatedPercentages[slideIndex * 3 + index] || 0}
-                      color={service.color}
-                    />
-                    <h3
-                      style={{
-                        margin: "25px 0 15px 0",
-                        fontSize: "24px",
-                        fontWeight: "600",
-                        color: "#2c3e50",
-                      }}
-                    >
-                      {service.name}
-                    </h3>
-                    <p
-                      style={{
-                        margin: 0,
-                        color: "#7f8c8d",
-                        fontSize: "16px",
-                        lineHeight: "1.5",
-                      }}
-                    >
-                      {service.description}
-                    </p>
+                {serviceNames.slice(slideIndex * 3, (slideIndex + 1) * 3).map((serviceName) => {
+                  const days = grouped[serviceName]
+                  // Calculate today's day index
+                  const todayIdx = new Date().getDay()
+                  const today = days.find(d => d.day_of_week === todayIdx)
+                  // Calculate performance percentage
+                  const percentage = today && today.predicted > 0 ? Math.round((today.actual / today.predicted) * 100) : 0
+                  return (
                     <div
+                      key={serviceName}
                       style={{
-                        marginTop: "20px",
-                        padding: "10px 20px",
-                        backgroundColor: `${service.color}15`,
-                        borderRadius: "25px",
-                        fontSize: "14px",
-                        fontWeight: "600",
-                        color: service.color,
+                        background: "linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%)",
+                        border: `3px solid #3498db`,
+                        borderRadius: "20px",
+                        padding: "35px",
+                        textAlign: "center",
+                        minWidth: "300px",
+                        boxShadow: `0 8px 25px rgba(0, 0, 0, 0.1), 0 0 0 1px #3498db20`,
+                        transition: "all 0.3s ease",
+                        cursor: "pointer",
                       }}
                     >
-                      {service.todayCount}/{service.expectedDaily} patients today
+                      <div style={{ marginBottom: 16 }}>
+                        <svg width={120} height={120} style={{ transform: "rotate(-90deg)" }}>
+                          <circle cx={60} cy={60} r={56} stroke="#f0f0f0" strokeWidth="8" fill="transparent" />
+                          <circle
+                            cx={60}
+                            cy={60}
+                            r={56}
+                            stroke="#3498db"
+                            strokeWidth="8"
+                            fill="transparent"
+                            strokeDasharray={2 * Math.PI * 56}
+                            strokeDashoffset={2 * Math.PI * 56 - (percentage / 100) * 2 * Math.PI * 56}
+                            strokeLinecap="round"
+                            style={{
+                              transition: "stroke-dashoffset 2s ease-in-out",
+                              filter: "drop-shadow(0 0 6px rgba(52, 152, 219, 0.3))",
+                            }}
+                          />
+                        </svg>
+                        <div
+                          style={{
+                            position: "absolute",
+                            top: "50%",
+                            left: "50%",
+                            transform: "translate(-50%, -50%)",
+                            fontSize: "18px",
+                            fontWeight: "bold",
+                            color: "#2c3e50",
+                          }}
+                        >
+                          {percentage}%
+                        </div>
+                      </div>
+                      <h3
+                        style={{
+                          margin: "25px 0 15px 0",
+                          fontSize: "24px",
+                          fontWeight: "600",
+                          color: "#2c3e50",
+                        }}
+                      >
+                        {serviceName}
+                      </h3>
+                      <div style={{ margin: "20px 0 10px 0", fontWeight: 500, color: "#7f8c8d" }}>
+                        {today ? `${today.actual}/${today.predicted.toFixed(2)} patients today (${today.day_name})` : "No data for today"}
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  )
+                })}
               </div>
             ))}
           </div>
@@ -311,14 +249,6 @@ export default function ServicesDashboard() {
               boxShadow: "0 4px 15px rgba(52, 152, 219, 0.4)",
               transition: "all 0.3s ease",
             }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.transform = "translateY(-50%) scale(1.1)"
-              e.currentTarget.style.boxShadow = "0 6px 20px rgba(52, 152, 219, 0.6)"
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.transform = "translateY(-50%) scale(1)"
-              e.currentTarget.style.boxShadow = "0 4px 15px rgba(52, 152, 219, 0.4)"
-            }}
           >
             ‹
           </button>
@@ -341,14 +271,6 @@ export default function ServicesDashboard() {
               boxShadow: "0 4px 15px rgba(52, 152, 219, 0.4)",
               transition: "all 0.3s ease",
             }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.transform = "translateY(-50%) scale(1.1)"
-              e.currentTarget.style.boxShadow = "0 6px 20px rgba(52, 152, 219, 0.6)"
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.transform = "translateY(-50%) scale(1)"
-              e.currentTarget.style.boxShadow = "0 4px 15px rgba(52, 152, 219, 0.4)"
-            }}
           >
             ›
           </button>
@@ -363,7 +285,7 @@ export default function ServicesDashboard() {
             marginTop: "30px",
           }}
         >
-          {Array.from({ length: Math.ceil(services.length / 3) }).map((_, index) => (
+          {Array.from({ length: slides }).map((_, index) => (
             <button
               key={index}
               onClick={() => setCurrentSlide(index)}
@@ -402,6 +324,25 @@ export default function ServicesDashboard() {
           Detailed Service Statistics
         </h2>
 
+        {/* Filters */}
+        <div style={{ display: 'flex', gap: 24, marginBottom: 32, justifyContent: 'center', alignItems: 'center' }}>
+          <input
+            type="text"
+            placeholder="Filter by service name..."
+            value={serviceFilter}
+            onChange={e => setServiceFilter(e.target.value)}
+            style={{ padding: 8, borderRadius: 6, border: '1px solid #ccc', fontSize: 16, minWidth: 220 }}
+          />
+          <input
+            type="number"
+            placeholder="Min predicted patients"
+            value={minPredicted}
+            onChange={e => setMinPredicted(Number(e.target.value))}
+            style={{ padding: 8, borderRadius: 6, border: '1px solid #ccc', fontSize: 16, minWidth: 180 }}
+            min={0}
+          />
+        </div>
+
         <div
           style={{
             maxWidth: "1200px",
@@ -432,223 +373,102 @@ export default function ServicesDashboard() {
                 </th>
                 <th style={{ padding: "20px", textAlign: "center", fontSize: "16px", fontWeight: "600" }}>Day</th>
                 <th style={{ padding: "20px", textAlign: "center", fontSize: "16px", fontWeight: "600" }}>
-                  Expected Patients/Day
+                  Predicted Patients
                 </th>
                 <th style={{ padding: "20px", textAlign: "center", fontSize: "16px", fontWeight: "600" }}>
-                  Patients Today
+                  Actual Patients (Last)
                 </th>
                 <th style={{ padding: "20px", textAlign: "center", fontSize: "16px", fontWeight: "600" }}>
                   Performance
                 </th>
-                <th style={{ padding: "20px", textAlign: "center", fontSize: "16px", fontWeight: "600" }}>Status</th>
               </tr>
             </thead>
             <tbody>
-              {services.map((service, index) => (
-                <tr
-                  key={service.id}
-                  style={{
-                    backgroundColor: index % 2 === 0 ? "#f8f9fa" : "#fff",
-                    transition: "all 0.3s ease",
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor = "#e3f2fd"
-                    e.currentTarget.style.transform = "scale(1.02)"
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor = index % 2 === 0 ? "#f8f9fa" : "#fff"
-                    e.currentTarget.style.transform = "scale(1)"
-                  }}
-                >
-                  <td
-                    style={{
-                      padding: "20px",
-                      fontWeight: "600",
-                      fontSize: "16px",
-                      color: "#2c3e50",
-                      borderLeft: `4px solid ${service.color}`,
-                    }}
-                  >
-                    {service.name}
-                  </td>
-                  <td
-                    style={{
-                      padding: "20px",
-                      textAlign: "center",
-                      fontSize: "15px",
-                      color: "#7f8c8d",
-                    }}
-                  >
-                    {service.dayName}
-                  </td>
-                  <td
-                    style={{
-                      padding: "20px",
-                      textAlign: "center",
-                      fontSize: "16px",
-                      fontWeight: "600",
-                      color: "#3498db",
-                    }}
-                  >
-                    {service.expectedDaily}
-                  </td>
-                  <td
-                    style={{
-                      padding: "20px",
-                      textAlign: "center",
-                      fontSize: "16px",
-                      fontWeight: "600",
-                      color: "#27ae60",
-                    }}
-                  >
-                    {service.todayCount}
-                  </td>
-                  <td style={{ padding: "20px", textAlign: "center" }}>
-                    <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "15px" }}>
-                      <CircularProgress percentage={service.percentage} size={50} color={service.color} />
-                      <span style={{ fontWeight: "600", fontSize: "16px", color: "#2c3e50" }}>
-                        {service.percentage}%
-                      </span>
-                    </div>
-                  </td>
-                  <td style={{ padding: "20px", textAlign: "center" }}>
-                    <span
+              {serviceNames.flatMap(serviceName =>
+                grouped[serviceName].map((day, idx) => {
+                  const percentage = day.predicted > 0 ? Math.round((day.actual / day.predicted) * 100) : 0
+                  return (
+                    <tr
+                      key={serviceName + "-" + day.day_of_week}
                       style={{
-                        padding: "8px 16px",
-                        borderRadius: "25px",
-                        fontSize: "14px",
-                        fontWeight: "600",
-                        background:
-                          service.percentage >= 80
-                            ? "linear-gradient(135deg, #27ae60 0%, #2ecc71 100%)"
-                            : service.percentage >= 60
-                              ? "linear-gradient(135deg, #3498db 0%, #5dade2 100%)"
-                              : "linear-gradient(135deg, #e74c3c 0%, #ec7063 100%)",
-                        color: "#fff",
-                        boxShadow:
-                          service.percentage >= 80
-                            ? "0 4px 15px rgba(39, 174, 96, 0.3)"
-                            : service.percentage >= 60
-                              ? "0 4px 15px rgba(52, 152, 219, 0.3)"
-                              : "0 4px 15px rgba(231, 76, 60, 0.3)",
+                        backgroundColor: idx % 2 === 0 ? "#f8f9fa" : "#fff",
+                        transition: "all 0.3s ease",
                       }}
                     >
-                      {service.percentage >= 80 ? "Excellent" : service.percentage >= 60 ? "Good" : "Needs Attention"}
-                    </span>
-                  </td>
-                </tr>
-              ))}
+                      <td
+                        style={{
+                          padding: "20px",
+                          fontWeight: "600",
+                          fontSize: "16px",
+                          color: "#2c3e50",
+                          borderLeft: `4px solid #3498db`,
+                        }}
+                      >
+                        {serviceName}
+                      </td>
+                      <td
+                        style={{
+                          padding: "20px",
+                          textAlign: "center",
+                          fontSize: "15px",
+                          color: "#7f8c8d",
+                        }}
+                      >
+                        {day.day_name}
+                      </td>
+                      <td
+                        style={{
+                          padding: "20px",
+                          textAlign: "center",
+                          fontSize: "16px",
+                          fontWeight: "600",
+                          color: "#3498db",
+                        }}
+                      >
+                        {day.predicted.toFixed(2)}
+                      </td>
+                      <td
+                        style={{
+                          padding: "20px",
+                          textAlign: "center",
+                          fontSize: "16px",
+                          fontWeight: "600",
+                          color: "#27ae60",
+                        }}
+                      >
+                        {day.actual}
+                      </td>
+                      <td style={{ padding: "20px", textAlign: "center" }}>
+                        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "15px" }}>
+                          <svg width={50} height={50} style={{ transform: "rotate(-90deg)" }}>
+                            <circle cx={25} cy={25} r={22} stroke="#f0f0f0" strokeWidth="6" fill="transparent" />
+                            <circle
+                              cx={25}
+                              cy={25}
+                              r={22}
+                              stroke="#3498db"
+                              strokeWidth="6"
+                              fill="transparent"
+                              strokeDasharray={2 * Math.PI * 22}
+                              strokeDashoffset={2 * Math.PI * 22 - (percentage / 100) * 2 * Math.PI * 22}
+                              strokeLinecap="round"
+                              style={{
+                                transition: "stroke-dashoffset 2s ease-in-out",
+                                filter: "drop-shadow(0 0 6px rgba(52, 152, 219, 0.3))",
+                              }}
+                            />
+                          </svg>
+                          <span style={{ fontWeight: "600", fontSize: "16px", color: "#2c3e50" }}>
+                            {percentage}%
+                          </span>
+                        </div>
+                      </td>
+                    </tr>
+                  )
+                })
+              )}
             </tbody>
           </table>
-        </div>
-      </section>
-
-      {/* Summary Stats */}
-      <section
-        style={{
-          padding: "50px 20px",
-          background: "linear-gradient(135deg, #2c3e50 0%, #34495e 100%)",
-          color: "#fff",
-        }}
-      >
-        <div
-          style={{
-            maxWidth: "1200px",
-            margin: "0 auto",
-            display: "flex",
-            justifyContent: "space-around",
-            flexWrap: "wrap",
-            gap: "30px",
-          }}
-        >
-          <div
-            style={{
-              textAlign: "center",
-              background: "linear-gradient(135deg, #3498db 0%, #5dade2 100%)",
-              padding: "30px",
-              borderRadius: "20px",
-              minWidth: "200px",
-              boxShadow: "0 8px 25px rgba(52, 152, 219, 0.3)",
-            }}
-          >
-            <h3
-              style={{
-                margin: "0 0 15px 0",
-                fontSize: "42px",
-                fontWeight: "700",
-                textShadow: "0 2px 4px rgba(0, 0, 0, 0.2)",
-              }}
-            >
-              {services.reduce((sum, service) => sum + service.todayCount, 0)}
-            </h3>
-            <p style={{ margin: 0, fontSize: "18px", fontWeight: "500" }}>Total Patients Today</p>
-          </div>
-          <div
-            style={{
-              textAlign: "center",
-              background: "linear-gradient(135deg, #27ae60 0%, #2ecc71 100%)",
-              padding: "30px",
-              borderRadius: "20px",
-              minWidth: "200px",
-              boxShadow: "0 8px 25px rgba(39, 174, 96, 0.3)",
-            }}
-          >
-            <h3
-              style={{
-                margin: "0 0 15px 0",
-                fontSize: "42px",
-                fontWeight: "700",
-                textShadow: "0 2px 4px rgba(0, 0, 0, 0.2)",
-              }}
-            >
-              {services.reduce((sum, service) => sum + service.expectedDaily, 0)}
-            </h3>
-            <p style={{ margin: 0, fontSize: "18px", fontWeight: "500" }}>Expected Daily Total</p>
-          </div>
-          <div
-            style={{
-              textAlign: "center",
-              background: "linear-gradient(135deg, #9b59b6 0%, #bb6bd9 100%)",
-              padding: "30px",
-              borderRadius: "20px",
-              minWidth: "200px",
-              boxShadow: "0 8px 25px rgba(155, 89, 182, 0.3)",
-            }}
-          >
-            <h3
-              style={{
-                margin: "0 0 15px 0",
-                fontSize: "42px",
-                fontWeight: "700",
-                textShadow: "0 2px 4px rgba(0, 0, 0, 0.2)",
-              }}
-            >
-              {Math.round(services.reduce((sum, service) => sum + service.percentage, 0) / services.length)}%
-            </h3>
-            <p style={{ margin: 0, fontSize: "18px", fontWeight: "500" }}>Average Performance</p>
-          </div>
-          <div
-            style={{
-              textAlign: "center",
-              background: "linear-gradient(135deg, #f39c12 0%, #f5b041 100%)",
-              padding: "30px",
-              borderRadius: "20px",
-              minWidth: "200px",
-              boxShadow: "0 8px 25px rgba(243, 156, 18, 0.3)",
-            }}
-          >
-            <h3
-              style={{
-                margin: "0 0 15px 0",
-                fontSize: "42px",
-                fontWeight: "700",
-                textShadow: "0 2px 4px rgba(0, 0, 0, 0.2)",
-              }}
-            >
-              {services.length}
-            </h3>
-            <p style={{ margin: 0, fontSize: "18px", fontWeight: "500" }}>Active Services</p>
-          </div>
         </div>
       </section>
     </div>

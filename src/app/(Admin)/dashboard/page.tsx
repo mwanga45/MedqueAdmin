@@ -111,7 +111,7 @@ export default function Dashboard() {
         <div className="dash-maincontainer">
           {isstaffOpen ? <ServicePopup /> : <AnimatedTable />}
         </div>
-        {/* Analytics/Prediction Modal */}
+
         {showAnalytics && (
           <div className="analytics-modal-overlay" onClick={handleCloseAnalytics}>
             <div className="analytics-modal-slide" onClick={e => e.stopPropagation()}>

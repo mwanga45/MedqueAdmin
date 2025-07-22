@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { MdDashboard } from "react-icons/md";
 import { FaUserEdit } from "react-icons/fa";
 import { FaCodeMerge } from "react-icons/fa6";
@@ -7,6 +7,7 @@ import { MdOutlineAnalytics } from "react-icons/md";
 import { SiMinutemailer } from "react-icons/si";
 import { IoSettingsOutline } from "react-icons/io5";
 import { useRouter, usePathname } from "next/navigation";
+import {jwtDecode} from "jwt-decode";
 import './side.css';
 
 const navItems = [
@@ -14,14 +15,32 @@ const navItems = [
   { label: "Staff Registration", icon: <FaUserEdit />, route: null },
   { label: "Scheduling", icon: <FaCodeMerge />, route: "/sheduling" },
   { label: "Service Registration", icon: <GrSchedules />, route: "/service-registration" },
-  { label: "Prediction", icon: <MdOutlineAnalytics />, route: null },
-  { label: "User-Recommendation", icon: <SiMinutemailer />, route: null },
+  { label: "Prediction", icon: <MdOutlineAnalytics />, route: "/prediction" },
+  { label: "Sign-Out", icon: <SiMinutemailer />, route:"/authentic" },
   { label: "Setting", icon: <IoSettingsOutline />, route: null },
+  
 ];
 
 export default function Sidebar() {
   const router = useRouter();
   const pathname = usePathname();
+  const [email, setEmail] = useState<string>("");
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const token = localStorage.getItem('token');
+      console.log(token)
+      if (token) {
+        try {
+          const decoded: any = jwtDecode(token);
+          setEmail(decoded.email || decoded.Email || "");
+        } catch (err) {
+          setEmail("");
+        }
+      }
+    }
+  }, []);
+
   return (
     <div className='side-nav-container'>
       <div className="side-nav-upper">
@@ -52,7 +71,7 @@ export default function Sidebar() {
           <img src="/next.svg" alt="Next.js Logo" />
         </div>
         <div className="side-nav-AccountName">
-          <p>@lynx Prazoo</p>
+          <p>{email ? email : "No email found"}</p>
         </div>
       </div>
     </div>

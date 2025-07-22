@@ -42,7 +42,6 @@ export default function Login({ changeToRegister }: LoginProps) {
     const handleUserTypeChange = (type: UserType) => {
         setUserType(type);
         setError('');
-        // Reset form when switching user types
         setFormData({
             username: '',
             registrationNumber: '',
@@ -65,8 +64,6 @@ export default function Login({ changeToRegister }: LoginProps) {
             setIsLoading(false);
             return;
         }
-
-        // For doctor login, registration number is required
         if (userType === 'doctor' && !formData.registrationNumber) {
             setError('Registration number is required for doctor login');
             setIsLoading(false);
