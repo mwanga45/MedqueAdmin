@@ -91,6 +91,7 @@ export default function Login({ changeToRegister }: LoginProps) {
             if (response.data.success) {
                 if (response.data.data && response.data.data.token) {
                     localStorage.setItem('token', response.data.data.token);
+                    const token = localStorage.getItem('token');
                     localStorage.setItem('userType', userType);
                     localStorage.setItem('userData', JSON.stringify(response.data.data.doctor || response.data.data.admin));
                 }
@@ -101,7 +102,7 @@ export default function Login({ changeToRegister }: LoginProps) {
                 if (userType === 'admin') {
                     router.push("/dashboard");
                 } else {
-                    router.push("/dashboard");
+                    router.push("/main");
                 }
             } else {
                 setError(response.data.message || 'Login failed');
